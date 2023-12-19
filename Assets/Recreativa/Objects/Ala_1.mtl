@@ -1,0 +1,10 @@
+newmtl Verde_0
+map_Kd TexturesCom_PaperCloseup0003_S.jpg
+bump TexturesCom_Grungemaps0196_1_overlay_S.tif
+Kd 0.4999555 0.990566 0.5597648
+d 1
+
+newmtl Blanco
+Kd 1 1 1
+d 1
+

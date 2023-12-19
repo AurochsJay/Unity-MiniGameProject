@@ -1,0 +1,9 @@
+newmtl Negro
+bump TexturesCom_BrokenGlass0029_1_S.jpg
+Kd 0.3490566 0.3490566 0.3490566
+d 1
+
+newmtl Negro_2
+Kd 0.06603771 0.06603771 0.06603771
+d 1
+
