@@ -1,0 +1,8 @@
+newmtl TetirsCube_I
+Kd 0.3470986 0.9811321 0.9784904
+d 1
+
+newmtl TetirsCube_I_dark
+Kd 0.2612585 0.5377358 0.5377358
+d 1
+

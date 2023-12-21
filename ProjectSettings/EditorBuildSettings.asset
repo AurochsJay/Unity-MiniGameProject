@@ -4,5 +4,26 @@
 EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
-  m_Scenes: []
+  m_Scenes:
+  - enabled: 1
+    path: Assets/1.Scene/MainMenu.unity
+    guid: 9fc0d4010bbf28b4594072e72b8655ab
+  - enabled: 1
+    path: Assets/1.Scene/Lobby.unity
+    guid: 7aeb9e24f93e5fa49a329ddc96bea487
+  - enabled: 1
+    path: Assets/1.Scene/Tetris.unity
+    guid: 1a8220e167aaa4a42ba1b095fad9d02f
+  - enabled: 1
+    path: Assets/1.Scene/Snake.unity
+    guid: 6c3da814a715a0045a1a77455016e585
+  - enabled: 1
+    path: Assets/1.Scene/Tangram.unity
+    guid: 686e2bfc727dd4e42bab5482df5a1934
+  - enabled: 1
+    path: Assets/1.Scene/Maze.unity
+    guid: 5c67861971698ca4b8a30af4ac7a4bf7
+  - enabled: 1
+    path: Assets/1.Scene/JumpUp.unity
+    guid: 8a34ad83266a24944b7e9a2dffb1417c
   m_configObjects: {}

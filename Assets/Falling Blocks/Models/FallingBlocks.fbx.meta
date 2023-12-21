@@ -1,0 +1,260 @@
+fileFormatVersion: 2
+guid: f996eba51615fcd4db752c8f3a9afb5e
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Block.Bend
+    100002: Block.Bend.2
+    100004: Block.Boarder
+    100006: Block.Dot
+    100008: Block.Dot.2
+    100010: Block.I
+    100012: Block.I.2
+    100014: Block.J
+    100016: Block.J.2
+    100018: Block.L
+    100020: Block.L.2
+    100022: Block.O
+    100024: Block.O.2
+    100026: Block.S
+    100028: Block.S.2
+    100030: Block.T
+    100032: Block.T.2
+    100034: Block.U
+    100036: Block.U.2
+    100038: Block.Z
+    100040: Block.Z.2
+    100042: //RootNode
+    400000: Block.Bend
+    400002: Block.Bend.2
+    400004: Block.Boarder
+    400006: Block.Dot
+    400008: Block.Dot.2
+    400010: Block.I
+    400012: Block.I.2
+    400014: Block.J
+    400016: Block.J.2
+    400018: Block.L
+    400020: Block.L.2
+    400022: Block.O
+    400024: Block.O.2
+    400026: Block.S
+    400028: Block.S.2
+    400030: Block.T
+    400032: Block.T.2
+    400034: Block.U
+    400036: Block.U.2
+    400038: Block.Z
+    400040: Block.Z.2
+    400042: //RootNode
+    2100000: Block.Bounds
+    2100002: Block.6
+    2100004: Block.5
+    2100006: Block.1
+    2100008: Block.7
+    2100010: Block.2
+    2100012: Block.8
+    2100014: Block.4
+    2100016: Block.3
+    2100018: Block.9
+    2100020: Block.10
+    2300000: Block.Bend
+    2300002: Block.Bend.2
+    2300004: Block.Boarder
+    2300006: Block.Dot
+    2300008: Block.Dot.2
+    2300010: Block.I
+    2300012: Block.I.2
+    2300014: Block.J
+    2300016: Block.J.2
+    2300018: Block.L
+    2300020: Block.L.2
+    2300022: Block.O
+    2300024: Block.O.2
+    2300026: Block.S
+    2300028: Block.S.2
+    2300030: Block.T
+    2300032: Block.T.2
+    2300034: Block.U
+    2300036: Block.U.2
+    2300038: Block.Z
+    2300040: Block.Z.2
+    3300000: Block.Bend
+    3300002: Block.Bend.2
+    3300004: Block.Boarder
+    3300006: Block.Dot
+    3300008: Block.Dot.2
+    3300010: Block.I
+    3300012: Block.I.2
+    3300014: Block.J
+    3300016: Block.J.2
+    3300018: Block.L
+    3300020: Block.L.2
+    3300022: Block.O
+    3300024: Block.O.2
+    3300026: Block.S
+    3300028: Block.S.2
+    3300030: Block.T
+    3300032: Block.T.2
+    3300034: Block.U
+    3300036: Block.U.2
+    3300038: Block.Z
+    3300040: Block.Z.2
+    4300000: Block.Boarder
+    4300002: Block.Dot.2
+    4300004: Block.O.2
+    4300006: Block.Z.2
+    4300008: Block.I.2
+    4300010: Block.S.2
+    4300012: Block.T.2
+    4300014: Block.J.2
+    4300016: Block.L.2
+    4300018: Block.U.2
+    4300020: Block.Bend.2
+    4300022: Block.Bend
+    4300024: Block.U
+    4300026: Block.L
+    4300028: Block.J
+    4300030: Block.T
+    4300032: Block.S
+    4300034: Block.I
+    4300036: Block.Z
+    4300038: Block.O
+    4300040: Block.Dot
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.1
+    second: {fileID: 2100000, guid: 86ded99a6ff261e48916687b728aedbc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.10
+    second: {fileID: 2100000, guid: 434492f68a5ac384a9b46e4fa76849d4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.2
+    second: {fileID: 2100000, guid: f6b8515c44ef29c41a877d4dc14a93be, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.3
+    second: {fileID: 2100000, guid: 59efa1827e627a445b5cdf74fb6c5ecd, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.4
+    second: {fileID: 2100000, guid: 58b7a20641aec2749bf0144ceb5290aa, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.5
+    second: {fileID: 2100000, guid: 4c11f9b874dc8df43afca091d3f8ec57, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.6
+    second: {fileID: 2100000, guid: 0416cbb5775acca4dbadde66c7890ea4, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.7
+    second: {fileID: 2100000, guid: b96fdeca48637d04ebdeb36e770eeb1d, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.8
+    second: {fileID: 2100000, guid: f2933e51a14b3b947ae0ba679d28edbc, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.9
+    second: {fileID: 2100000, guid: ef76d1730becd6147a73b5017152ba96, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: Block.Bounds
+    second: {fileID: 2100000, guid: c5e15af233901294794692211791e0ee, type: 2}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 0
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 0
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
