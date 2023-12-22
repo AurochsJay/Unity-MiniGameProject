@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7769730904777190729}
   - component: {fileID: 7769730904777190775}
   - component: {fileID: 7769730904777190728}
+  - component: {fileID: 5195078267037200897}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -82,6 +83,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &5195078267037200897
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7769730904777190730}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1735acfd29b8c4baae782d9f4298e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tetris: {fileID: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &7769730904817342104
 GameObject:
   m_ObjectHideFlags: 0
@@ -93,6 +108,7 @@ GameObject:
   - component: {fileID: 7769730904817342087}
   - component: {fileID: 7769730904817342085}
   - component: {fileID: 7769730904817342086}
+  - component: {fileID: 193887549332190047}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -164,6 +180,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &193887549332190047
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7769730904817342104}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1735acfd29b8c4baae782d9f4298e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tetris: {fileID: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &7769730905313896313
 GameObject:
   m_ObjectHideFlags: 0
@@ -175,6 +205,7 @@ GameObject:
   - component: {fileID: 7769730905313896312}
   - component: {fileID: 7769730905313896294}
   - component: {fileID: 7769730905313896295}
+  - component: {fileID: 1050357155412327310}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -246,6 +277,20 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &1050357155412327310
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7769730905313896313}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1735acfd29b8c4baae782d9f4298e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tetris: {fileID: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
 --- !u!1 &7769730905490057327
 GameObject:
   m_ObjectHideFlags: 0
@@ -295,6 +340,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   input: {fileID: 0}
   tetris: {fileID: 0}
+  blocks: []
+  isFieldTetromino: 0
 --- !u!1 &7769730905808056716
 GameObject:
   m_ObjectHideFlags: 0
@@ -306,6 +353,7 @@ GameObject:
   - component: {fileID: 7769730905808056715}
   - component: {fileID: 7769730905808056713}
   - component: {fileID: 7769730905808056714}
+  - component: {fileID: 8800932725926468910}
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -377,3 +425,17 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!114 &8800932725926468910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7769730905808056716}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7a1735acfd29b8c4baae782d9f4298e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  tetris: {fileID: 0}
+  worldPosition: {x: 0, y: 0, z: 0}
