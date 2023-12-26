@@ -5,6 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - GameSelector
+  - Tetromino_O
+  - Tetromino_I
   layers:
   - Default
   - TransparentFX

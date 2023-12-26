@@ -9,13 +9,12 @@ public class TetrisManager : MonoBehaviour
     [SerializeField] private TetrominoController tetromino;
 
     public readonly int width = 10;
-    public readonly int height = 22;
+    public readonly int height = 24;
 
     private void Start()
     {
-        grid = new Grid2D(height, width);
         //grid = GameObject.Find("GameManager").GetComponent<Grid2D>(width, height);
-        //grid.SetGrid(height, width);
+        grid.SetGrid(height, width);
 
         //CheckGridArrayDebug();
     }
@@ -31,10 +30,7 @@ public class TetrisManager : MonoBehaviour
 
     }
 
-    public void SyncGridPos(Vector3 block)
-    {
-        grid.array[(int)block.z, (int)block.x] = 1;
-    }
+    public void SyncGridPos(Vector3 block) => grid.array[(int)block.z, (int)block.x] = 1;
 
     //private void CheckGridArrayDebug()
     //{

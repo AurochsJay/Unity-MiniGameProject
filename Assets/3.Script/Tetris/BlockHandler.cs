@@ -13,12 +13,15 @@ public class BlockHandler : MonoBehaviour
 
     private void Start()
     {
-        tetris = transform.parent.GetComponent<TetrisManager>();
+        tetris = GameObject.Find("TetrisManager").GetComponent<TetrisManager>();
     }
 
     private void Update()
     {
-        worldPosition = transform.TransformPoint(transform.position);
+        //worldPosition = transform.TransformPoint(transform.position);
+        //UpdateWorldPositionToInt();
+        //worldPosition = transform.position;
+        Debug.Log($"x : {worldPosition.x}, z : {worldPosition.z}");
         //tetris.SyncGridPos(transform.position);
     }
 
@@ -41,6 +44,15 @@ public class BlockHandler : MonoBehaviour
         }
 
         return canMove;
+    }
+
+    public void UpdateWorldPositionToInt(Vector3 rotOffset)
+    {
+        int x = Mathf.RoundToInt(transform.position.x + rotOffset.x);
+        int z = Mathf.RoundToInt(transform.position.z + rotOffset.z);
+
+        worldPosition.x = x;
+        worldPosition.z = z;
     }
 
     

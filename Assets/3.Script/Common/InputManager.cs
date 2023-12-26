@@ -82,7 +82,7 @@ public class InputManager : MonoBehaviour
             tetromino_Drop = false;
         }
 
-        
+
 
 
     }

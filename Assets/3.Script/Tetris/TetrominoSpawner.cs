@@ -9,7 +9,7 @@ public class TetrominoSpawner : MonoBehaviour
     // 이 스크립트가 실질적으로 블록을 생성하므로 생성의 순서를 TetrisManager에게 알려줘야 한다.
 
     [SerializeField] private GameObject[] tetrominoGroup;
-    private Vector3 spawnPos = new Vector3(5, 0, 20);
+    private Vector3 spawnPos = new Vector3(5.5f, 0, 18.5f);
     public GameObject fieldTetromino;
 
     private void Start()

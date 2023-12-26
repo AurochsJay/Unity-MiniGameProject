@@ -2,6 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+public enum Rot
+{
+    Rot0,
+    Rot90,
+    Rot180,
+    Rot270
+}
+
 public class TetrominoController : MonoBehaviour
 {
     //모든 그룹에 컴포넌트로 달아놓는다. 현재 움직일 블록이면 움직이게 한다.
@@ -10,7 +18,7 @@ public class TetrominoController : MonoBehaviour
     [SerializeField] private InputManager input;
     [SerializeField] private TetrisManager tetris;
     [SerializeField] private BlockHandler[] blocks;
-    private int rotate_Count;
+    public int rotate_Count;
     public bool isFieldTetromino = false;
 
     private int grid_X;
@@ -19,16 +27,28 @@ public class TetrominoController : MonoBehaviour
     private bool canMove;
     private int canMoveCount = 0;
 
+    //전 위치로 되돌리는 변수
+    private Transform prevTransform;
+    public Vector3[] pivotPoint;
+    private Vector3 offset = new Vector3(0.5f, 0, 0.5f);
+
+    public Rot rot = Rot.Rot0;
+
     private void Start()
     {
         input = GameObject.Find("GameManager").GetComponent<InputManager>();
         tetris = GameObject.Find("TetrisManager").GetComponent<TetrisManager>();
+        
         rotate_Count = 0;
-        grid_X = (int)transform.position.x;
-        grid_Y = (int)transform.position.z;
+
+        if (transform.CompareTag("Tetromino_O") || transform.CompareTag("Tetromino_I")) offset = Vector3.zero;
+
+        grid_X = (int)(transform.position.x + offset.x);
+        grid_Y = (int)(transform.position.z + offset.z);
+        prevTransform = GetComponent<Transform>();
 
         FindBlocks();
-        CheckGridArrayDebug();
+        //CheckGridArrayDebug();
     }
 
     private void Update()
@@ -36,6 +56,8 @@ public class TetrominoController : MonoBehaviour
         // Input 조작
         if(isFieldTetromino)
         {
+            UpdateBlocksWorldPosition();
+            CopyPreviousTransform();
             Move();
             Rotate();
             Drop();
@@ -49,7 +71,7 @@ public class TetrominoController : MonoBehaviour
         {
             grid_X += input.tetromino_Move_X;
             grid_Y += input.tetromino_Move_Y;
-            transform.position = new Vector3(grid_X, 0, grid_Y);
+            transform.position = new Vector3(grid_X, 0, grid_Y) + offset;
 
             if(CheckBlocksOverlap()) // 이동을 했는데, block들이 겹쳤다면
             {
@@ -58,10 +80,10 @@ public class TetrominoController : MonoBehaviour
 
             //todo 이동했을때 블록이 자동으로 떨어지는 timer 초기화 // 아래로만 이동했을때?
         }
-        else if(false) // 이동할 수 없고 밑줄 블록에 닿았다면 놓아진다. 옆 블록이라면? 되돌린다.
-        {
+        //else if(false) // 이동할 수 없고 밑줄 블록에 닿았다면 놓아진다. 옆 블록이라면? 되돌린다.
+        //{
 
-        }
+        //}
         
 
     }
@@ -70,10 +92,13 @@ public class TetrominoController : MonoBehaviour
     {
         if(input.tetromino_Rotate && CheckTetrominoCanMove())
         {
-            rotate_Count++;
-            transform.rotation = Quaternion.Euler(0, 90*rotate_Count, 0);
+            if (rot > Rot.Rot270) rot = 0;
 
-            if(CheckBlocksOverlap())
+            transform.rotation = Quaternion.Euler(0, 90 * (int)(rot+1), 0);
+            //transform.RotateAround(pivotPoint[rotate_Count] + transform.position, Vector3.up, 90);
+            rot++;
+
+            if (CheckBlocksOverlap())
             {
                 RollBackRotate();
             }
@@ -103,23 +128,27 @@ public class TetrominoController : MonoBehaviour
         }
     }
 
-    // Tetromino가 이동할 수 있는지 체크
+    // Tetromino가 이동할 수 있는지 체크, Board 범위안에서
     private bool CheckTetrominoCanMove()
     {
+        int count = 0;
+
         for (int i = 0; i < blocks.Length; i++)
         {
             if (blocks[i].CheckBlockCanMove())
             {
-                canMoveCount++;
+                count++;
             }
         }
 
-        if(blocks.Length == canMoveCount)
+        if(blocks.Length == count)
         {
             return true;
         }
         else
         {
+            Debug.Log("들어오니");
+            RollBackTransform(prevTransform); 
             return false;
         }
     }
@@ -137,7 +166,7 @@ public class TetrominoController : MonoBehaviour
             }
         }
 
-        if(count != blocks.Length)
+        if(count > 0)
         {
             return true;
         }
@@ -159,6 +188,49 @@ public class TetrominoController : MonoBehaviour
     private void RollBackRotate()
     {
         transform.rotation = Quaternion.Euler(0, 90 * (rotate_Count-1), 0);
+    }
+
+    // 저번 위치 설정
+    private void CopyPreviousTransform()
+    {
+        prevTransform.SetPositionAndRotation(transform.position, transform.rotation);
+    }
+
+    // Board 범위를 벗어날 시 전 위치로 롤백
+    private void RollBackTransform(Transform prev)
+    {
+        transform.SetPositionAndRotation(prev.position, prev.rotation);
+    }
+
+    // Block WorldPosition 갱신 // Rotate순서에 따라 위치값 보정
+    private void UpdateBlocksWorldPosition()
+    {
+        Vector3 rotOffset = Vector3.zero;
+
+        switch (rot)
+        {
+            case Rot.Rot0:
+                rotOffset = Vector3.zero;
+                break;
+            case Rot.Rot90:
+                rotOffset = Vector3.left;
+                break;
+            case Rot.Rot180:
+                rotOffset = Vector3.left + Vector3.forward;
+                break;
+            case Rot.Rot270:
+                rotOffset = Vector3.forward;
+                break;
+            default:
+                Debug.Log("그럴일은 없겠지만 ");
+                break;
+        }
+
+
+        foreach (BlockHandler block in blocks)
+        {
+            block.UpdateWorldPositionToInt(rotOffset);
+        }
     }
 
     private void CheckGridArrayDebug()
