@@ -56,6 +56,7 @@ MonoBehaviour:
   - {x: 8.381334e-10, y: 0.00016994479, z: 0.00000001025551}
   - {x: 0.0000001687563, y: 2.1026943e+20, z: 8.310082e+20}
   - {x: 0.000000010313756, y: 0.0001737713, z: 0}
+  rot: 0
 --- !u!1 &2176931891678511393
 GameObject:
   m_ObjectHideFlags: 0
@@ -68,6 +69,7 @@ GameObject:
   - component: {fileID: 2176931891678511396}
   - component: {fileID: 2176931891678511399}
   - component: {fileID: 7087902404830972255}
+  - component: {fileID: 767386625037828768}
   m_Layer: 0
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -153,6 +155,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tetris: {fileID: 0}
   worldPosition: {x: 0, y: 0, z: 0}
+--- !u!65 &767386625037828768
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2176931891678511393}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.177047, z: 1}
+  m_Center: {x: 0.5, y: 0.5885235, z: -0.5}
 --- !u!1 &2176931891897175565
 GameObject:
   m_ObjectHideFlags: 0
@@ -165,6 +180,7 @@ GameObject:
   - component: {fileID: 2176931891897175552}
   - component: {fileID: 2176931891897175555}
   - component: {fileID: 5390115532769839318}
+  - component: {fileID: 402289249323597883}
   m_Layer: 0
   m_Name: Cube
   m_TagString: Untagged
@@ -250,6 +266,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tetris: {fileID: 0}
   worldPosition: {x: 0, y: 0, z: 0}
+--- !u!65 &402289249323597883
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2176931891897175565}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.177047, z: 1}
+  m_Center: {x: 0.5, y: 0.5885235, z: -0.5}
 --- !u!1 &2176931892787830937
 GameObject:
   m_ObjectHideFlags: 0
@@ -262,6 +291,7 @@ GameObject:
   - component: {fileID: 2176931892787830940}
   - component: {fileID: 2176931892787830943}
   - component: {fileID: 2252757959673055595}
+  - component: {fileID: 4193404620092351404}
   m_Layer: 0
   m_Name: Cube (3)
   m_TagString: Untagged
@@ -347,6 +377,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tetris: {fileID: 0}
   worldPosition: {x: 0, y: 0, z: 0}
+--- !u!65 &4193404620092351404
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2176931892787830937}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.177047, z: 1}
+  m_Center: {x: 0.5, y: 0.5885235, z: -0.5}
 --- !u!1 &2176931892858566704
 GameObject:
   m_ObjectHideFlags: 0
@@ -359,6 +402,7 @@ GameObject:
   - component: {fileID: 2176931892858566711}
   - component: {fileID: 2176931892858566710}
   - component: {fileID: 3760896155468911624}
+  - component: {fileID: 8845779123786737604}
   m_Layer: 0
   m_Name: Cube (2)
   m_TagString: Untagged
@@ -444,3 +488,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tetris: {fileID: 0}
   worldPosition: {x: 0, y: 0, z: 0}
+--- !u!65 &8845779123786737604
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2176931892858566704}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1, y: 1.177047, z: 1}
+  m_Center: {x: 0.5, y: 0.5885235, z: -0.5}

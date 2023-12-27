@@ -17,15 +17,13 @@ public class TetrominoController : MonoBehaviour
     //입력은 InputManager에서 가져온다.
     [SerializeField] private InputManager input;
     [SerializeField] private TetrisManager tetris;
+    //[SerializeField] private TetrominoSpawner spawner;
     [SerializeField] private BlockHandler[] blocks;
-    public int rotate_Count;
+    public int rotate_Count = 0;
     public bool isFieldTetromino = false;
 
     private int grid_X;
     private int grid_Y;
-
-    private bool canMove;
-    private int canMoveCount = 0;
 
     //전 위치로 되돌리는 변수
     private Transform prevTransform;
@@ -33,18 +31,23 @@ public class TetrominoController : MonoBehaviour
     private Vector3 offset = new Vector3(0.5f, 0, 0.5f);
 
     public Rot rot = Rot.Rot0;
+    private Rot aheadRot = Rot.Rot0;
+
+    private float timer = 0.8f;
+    private float fall_ElapsedTime = 0f;
+
+    private bool isOverlap = false; // 블록 겹침 변수
 
     private void Start()
     {
         input = GameObject.Find("GameManager").GetComponent<InputManager>();
         tetris = GameObject.Find("TetrisManager").GetComponent<TetrisManager>();
         
-        rotate_Count = 0;
-
         if (transform.CompareTag("Tetromino_O") || transform.CompareTag("Tetromino_I")) offset = Vector3.zero;
 
         grid_X = (int)(transform.position.x + offset.x);
         grid_Y = (int)(transform.position.z + offset.z);
+        transform.position = new Vector3(grid_X, 0, grid_Y) + offset;
         prevTransform = GetComponent<Transform>();
 
         FindBlocks();
@@ -57,17 +60,30 @@ public class TetrominoController : MonoBehaviour
         if(isFieldTetromino)
         {
             UpdateBlocksWorldPosition();
-            CopyPreviousTransform();
+            Fall();
+            //CopyPreviousTransform();
             Move();
             Rotate();
             Drop();
+            Place();
         }
         
     }
 
+    // Tetromino가 떨어지는것
+    private void Fall()
+    {
+        fall_ElapsedTime += Time.deltaTime;
+        if(fall_ElapsedTime > timer)
+        {
+            fall_ElapsedTime = 0f;
+            grid_Y -= 1;
+        }
+    }
+
     private void Move()
     {
-        if(CheckTetrominoCanMove())
+        if(input.tetromino_Move && CheckTetrominoCanMove())
         {
             grid_X += input.tetromino_Move_X;
             grid_Y += input.tetromino_Move_Y;
@@ -84,19 +100,16 @@ public class TetrominoController : MonoBehaviour
         //{
 
         //}
-        
-
     }
 
     private void Rotate()
     {
-        if(input.tetromino_Rotate && CheckTetrominoCanMove())
+        if(input.tetromino_Rotate && CheckTetrominoCanRotate())
         {
-            if (rot > Rot.Rot270) rot = 0;
-
-            transform.rotation = Quaternion.Euler(0, 90 * (int)(rot+1), 0);
-            //transform.RotateAround(pivotPoint[rotate_Count] + transform.position, Vector3.up, 90);
             rot++;
+            if (rot > Rot.Rot270) rot = Rot.Rot0;
+
+            transform.rotation = Quaternion.Euler(0, 90 * (int)rot, 0);
 
             if (CheckBlocksOverlap())
             {
@@ -107,14 +120,64 @@ public class TetrominoController : MonoBehaviour
 
     private void Drop()
     {
+        if(input.tetromino_Drop)
+        {
+            // block들의 position.z들을 비교해야겠지
+            bool canDrop = true;
+            while(canDrop) // grid index가 1이거나 맨 밑줄일때까지
+            {
+                grid_Y -= 1;
+                UpdateBlocksWorldPosition();
 
+                int count = 0;
+                foreach (BlockHandler block in blocks)
+                {
+                    if (block.worldPosition.z == 0 || tetris.grid.array[(int)block.worldPosition.z - 1, (int)block.worldPosition.x] == 1)
+                    {
+                        count++;
+                    }
+                }
+
+                if (count > 0)
+                {
+                    canDrop = false;
+                }
+                else
+                {
+                    canDrop = true;
+                }
+
+            }
+        }
     }
 
-    // 테트로미노를 놓았다면, 놓아졌다면
-    private bool isPlaceTetromino()
+    private void Place()
     {
+        if(!isOverlap)
+        {
+            int count = 0;
 
-        return true;
+            foreach (BlockHandler block in blocks)
+            {
+                if (block.IsPlaceBlock())
+                {
+                    count++;
+                }
+            }
+
+            if (count > 0) // 하나의 블록이라도 놓여지는 상황이라면
+            {
+                foreach (BlockHandler block in blocks)
+                {
+                    block.PlaceBlock();
+                }
+
+                isFieldTetromino = false;
+                tetris.spawner.CreateTetromino();
+                //tetris.CheckLine();
+                tetris.Invoke("CheckLine", 0.1f);
+            }
+        }
     }
 
     // BlockHandler 컴포넌트 할당
@@ -128,38 +191,87 @@ public class TetrominoController : MonoBehaviour
         }
     }
 
+    #region CheckMove
     // Tetromino가 이동할 수 있는지 체크, Board 범위안에서
     private bool CheckTetrominoCanMove()
     {
-        int count = 0;
+        // Move 시 그 방향으로 한번 더 앞서나가서 범위를 나갔는지 아닌지 체크
+        Vector3 aheadInputPos = new Vector3(input.tetromino_Move_X, 0f, input.tetromino_Move_Y);
 
+        int count = 0;
         for (int i = 0; i < blocks.Length; i++)
         {
-            if (blocks[i].CheckBlockCanMove())
+            if (blocks[i].CheckAheadBlockCanMove(aheadInputPos))
             {
                 count++;
             }
         }
 
-        if(blocks.Length == count)
+        if (blocks.Length == count)
         {
             return true;
         }
         else
         {
-            Debug.Log("들어오니");
-            RollBackTransform(prevTransform); 
             return false;
         }
     }
+    #endregion
+
+    #region CheckRotate
+    // Tetromino가 Board 범위 안에서 회전할 수 있는 지 체크
+    private bool CheckTetrominoCanRotate()
+    {
+        if (input.tetromino_Rotate) aheadRot++;
+
+        if (aheadRot > Rot.Rot270) aheadRot = Rot.Rot0;
+
+        transform.rotation = Quaternion.Euler(0, 90 * (int)aheadRot, 0);
+
+        Vector3[] aheadBlockPos = new Vector3[blocks.Length];
+        Vector3 aheadOffset = RotOffset(aheadRot);
+
+        int count = 0;
+        for (int i = 0; i < blocks.Length; i++)
+        {
+            aheadBlockPos[i] = blocks[i].transform.position + aheadOffset;
+
+            if (CheckAheadBlockCanRotate(aheadBlockPos[i]))
+            {
+                if (i == 3)
+                {
+                    //Debug.Log("Block들의 worldposition과 같은지 " + aheadBlockPos[i]);
+                }
+
+                count++;
+            }
+        }
+        transform.rotation = Quaternion.Euler(0, -90 * (int)aheadRot, 0);
+
+        if (blocks.Length == count)
+        {
+            Debug.Log("rotate true");
+            return true;
+        }
+        else
+        {
+            Debug.Log("rotate false");
+            return false;
+        }
+    }
+    #endregion
+
 
     // Block들이 다른 Block들과 겹쳐있는지 체크
     private bool CheckBlocksOverlap()
     {
+        UpdateBlocksWorldPosition();
         int count = 0;
 
+        Debug.Log("여기 블록겹치는거 확인하는거는 들어온단말이지?");
+
         for(int i = 0; i < blocks.Length; i++)
-        {
+        {                              
             if(tetris.grid.array[(int)blocks[i].worldPosition.z, (int)blocks[i].worldPosition.x] == 1)
             {
                 count++;
@@ -168,6 +280,7 @@ public class TetrominoController : MonoBehaviour
 
         if(count > 0)
         {
+            isOverlap = true;
             return true;
         }
         else
@@ -179,15 +292,17 @@ public class TetrominoController : MonoBehaviour
     // Move시 겹치면 롤백
     private void RollBackMove()
     {
+        Debug.Log("RollBackMove 들어오긴 했으나.");
         grid_X -= input.tetromino_Move_X;
         grid_Y -= input.tetromino_Move_Y;
-        transform.position = new Vector3(grid_X, 0, grid_Y);
+        transform.position = new Vector3(grid_X, 0, grid_Y) + offset;
     }
 
     // Rotate시 겹치면 롤백
     private void RollBackRotate()
     {
-        transform.rotation = Quaternion.Euler(0, 90 * (rotate_Count-1), 0);
+        transform.rotation = Quaternion.Euler(0, 90 * (int)(rot - 1), 0);
+        rot--;
     }
 
     // 저번 위치 설정
@@ -202,34 +317,78 @@ public class TetrominoController : MonoBehaviour
         transform.SetPositionAndRotation(prev.position, prev.rotation);
     }
 
-    // Block WorldPosition 갱신 // Rotate순서에 따라 위치값 보정
-    private void UpdateBlocksWorldPosition()
+    // AheadBlock WorldPosition 갱신, Rotate
+    private Vector3 RotOffset(Rot aheadRot)
     {
-        Vector3 rotOffset = Vector3.zero;
+        Vector3 aheadRotOffset = Vector3.zero;
 
-        switch (rot)
+        switch (aheadRot)
         {
             case Rot.Rot0:
-                rotOffset = Vector3.zero;
+                aheadRotOffset = Vector3.zero;
                 break;
             case Rot.Rot90:
-                rotOffset = Vector3.left;
+                aheadRotOffset = Vector3.left;
                 break;
             case Rot.Rot180:
-                rotOffset = Vector3.left + Vector3.forward;
+                aheadRotOffset = Vector3.left + Vector3.forward;
                 break;
             case Rot.Rot270:
-                rotOffset = Vector3.forward;
-                break;
-            default:
-                Debug.Log("그럴일은 없겠지만 ");
+                aheadRotOffset = Vector3.forward;
                 break;
         }
 
+        return aheadRotOffset;
+    }
+
+    // Block WorldPosition 갱신 // Rotate순서에 따라 위치값 보정
+    private void UpdateBlocksWorldPosition()
+    {
+        // 코드 구조를 볼때 맨 처음에 block 포지션을 갱신할때 시작을 하니까. block과 관련된 변수초기화는 이 메서드에 넣는것이 맞는거 같은데
+        isOverlap = false;
+
+        transform.position = new Vector3(grid_X, 0, grid_Y) + offset;
+
+        Vector3 rotOffset = RotOffset(rot);
 
         foreach (BlockHandler block in blocks)
         {
             block.UpdateWorldPositionToInt(rotOffset);
+        }
+    }
+
+    // board 범위 안 체크
+    private bool CheckAheadBlockCanRotate(Vector3 aheadBlockPos)
+    {
+        if ((0 <= aheadBlockPos.x && aheadBlockPos.x < tetris.width) && (0 <= aheadBlockPos.y && aheadBlockPos.y <= tetris.height))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    // Drop 조건 체크
+    private bool CanDrop()
+    {
+        int count = 0;
+        foreach (BlockHandler block in blocks)
+        {
+            if (block.worldPosition.z == 0 || tetris.grid.array[(int)block.worldPosition.z - 1, (int)block.worldPosition.x] == 1)
+            {
+                count++;
+            }
+        }
+
+        if(count > 0)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
         }
     }
 

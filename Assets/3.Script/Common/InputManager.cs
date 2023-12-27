@@ -20,6 +20,7 @@ public class InputManager : MonoBehaviour
     //테트리스 이동 변수
     public int tetromino_Move_X; // 좌우 이동
     public int tetromino_Move_Y; // 밑으로 이동
+    public bool tetromino_Move = false;
 
     //테트리스 회전 변수
     public bool tetromino_Rotate = false;
@@ -57,14 +58,17 @@ public class InputManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.RightArrow))
         {
             tetromino_Move_X = 1;
+            tetromino_Move = true;
         }
         else if(Input.GetKeyDown(KeyCode.LeftArrow))
         {
             tetromino_Move_X = -1;
+            tetromino_Move = true;
         }
         else if(Input.GetKeyDown(KeyCode.DownArrow))
         {
             tetromino_Move_Y = -1;
+            tetromino_Move = true;
         }
         else if(Input.GetKeyDown(KeyCode.UpArrow))
         {
@@ -78,6 +82,7 @@ public class InputManager : MonoBehaviour
         {
             tetromino_Move_X = 0;
             tetromino_Move_Y = 0;
+            tetromino_Move = false;
             tetromino_Rotate = false;
             tetromino_Drop = false;
         }
