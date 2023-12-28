@@ -51,15 +51,16 @@ public class TetrominoController : MonoBehaviour
         prevTransform = GetComponent<Transform>();
 
         FindBlocks();
+        UpdateBlocksWorldPosition();
         //CheckGridArrayDebug();
     }
 
     private void Update()
     {
         // Input 조작
-        if(isFieldTetromino)
+        if (isFieldTetromino)
         {
-            UpdateBlocksWorldPosition();
+            //UpdateBlocksWorldPosition();
             Fall();
             //CopyPreviousTransform();
             Move();
@@ -78,6 +79,7 @@ public class TetrominoController : MonoBehaviour
         {
             fall_ElapsedTime = 0f;
             grid_Y -= 1;
+            UpdateBlocksWorldPosition();
         }
     }
 
@@ -88,6 +90,7 @@ public class TetrominoController : MonoBehaviour
             grid_X += input.tetromino_Move_X;
             grid_Y += input.tetromino_Move_Y;
             transform.position = new Vector3(grid_X, 0, grid_Y) + offset;
+            UpdateBlocksWorldPosition();
 
             if(CheckBlocksOverlap()) // 이동을 했는데, block들이 겹쳤다면
             {
@@ -110,6 +113,7 @@ public class TetrominoController : MonoBehaviour
             if (rot > Rot.Rot270) rot = Rot.Rot0;
 
             transform.rotation = Quaternion.Euler(0, 90 * (int)rot, 0);
+            UpdateBlocksWorldPosition();
 
             if (CheckBlocksOverlap())
             {
@@ -167,15 +171,20 @@ public class TetrominoController : MonoBehaviour
 
             if (count > 0) // 하나의 블록이라도 놓여지는 상황이라면
             {
+                //UpdateBlocksWorldPosition();
                 foreach (BlockHandler block in blocks)
                 {
                     block.PlaceBlock();
                 }
 
                 isFieldTetromino = false;
-                tetris.spawner.CreateTetromino();
+                tetris.spawner.Invoke("CreateTetromino", 0.2f);
+                //tetris.spawner.CreateTetromino();
                 //tetris.CheckLine();
-                tetris.Invoke("CheckLine", 0.1f);
+                tetris.Invoke("CheckLine", 0.15f);
+                //Time.timeScale = 0;
+
+                
             }
         }
     }
@@ -296,6 +305,7 @@ public class TetrominoController : MonoBehaviour
         grid_X -= input.tetromino_Move_X;
         grid_Y -= input.tetromino_Move_Y;
         transform.position = new Vector3(grid_X, 0, grid_Y) + offset;
+        UpdateBlocksWorldPosition();
     }
 
     // Rotate시 겹치면 롤백
@@ -303,6 +313,7 @@ public class TetrominoController : MonoBehaviour
     {
         transform.rotation = Quaternion.Euler(0, 90 * (int)(rot - 1), 0);
         rot--;
+        UpdateBlocksWorldPosition();
     }
 
     // 저번 위치 설정

@@ -21,7 +21,7 @@ public class TetrominoSpawner : MonoBehaviour
     {
         int rand = Random.Range(0, tetrominoGroup.Length);
 
-        GameObject tetromino = Instantiate(tetrominoGroup[1], spawnPos, Quaternion.identity);
+        GameObject tetromino = Instantiate(tetrominoGroup[0], spawnPos, Quaternion.identity);
         tetromino.GetComponent<TetrominoController>().isFieldTetromino = true;
 
         return tetromino;
