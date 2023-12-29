@@ -96,13 +96,7 @@ public class TetrominoController : MonoBehaviour
             {
                 RollBackMove();
             }
-
-            //todo 이동했을때 블록이 자동으로 떨어지는 timer 초기화 // 아래로만 이동했을때?
         }
-        //else if(false) // 이동할 수 없고 밑줄 블록에 닿았다면 놓아진다. 옆 블록이라면? 되돌린다.
-        //{
-
-        //}
     }
 
     private void Rotate()
@@ -179,12 +173,7 @@ public class TetrominoController : MonoBehaviour
 
                 isFieldTetromino = false;
                 tetris.spawner.Invoke("CreateTetromino", 0.2f);
-                //tetris.spawner.CreateTetromino();
-                //tetris.CheckLine();
-                tetris.Invoke("CheckLine", 0.15f);
-                //Time.timeScale = 0;
-
-                
+                tetris.Invoke("CheckLine", 0.1f);
             }
         }
     }
@@ -231,31 +220,36 @@ public class TetrominoController : MonoBehaviour
     // Tetromino가 Board 범위 안에서 회전할 수 있는 지 체크
     private bool CheckTetrominoCanRotate()
     {
+        
         if (input.tetromino_Rotate) aheadRot++;
 
         if (aheadRot > Rot.Rot270) aheadRot = Rot.Rot0;
 
+        Quaternion tempQuaternion = transform.localRotation;
         transform.rotation = Quaternion.Euler(0, 90 * (int)aheadRot, 0);
 
         Vector3[] aheadBlockPos = new Vector3[blocks.Length];
         Vector3 aheadOffset = RotOffset(aheadRot);
 
+
         int count = 0;
         for (int i = 0; i < blocks.Length; i++)
         {
-            aheadBlockPos[i] = blocks[i].transform.position + aheadOffset;
-
+            // 부모 오브젝트의 로컬 변환을 고려하여 자식 오브젝트의 로컬 포지션을 월드 포지션으로 변환.
+            aheadBlockPos[i] = transform.TransformPoint(transform.GetChild(i).localPosition) + aheadOffset;
+            aheadBlockPos[i].x = Mathf.RoundToInt(aheadBlockPos[i].x);
+            aheadBlockPos[i].z = Mathf.RoundToInt(aheadBlockPos[i].z);
+            Debug.Log($"Rot:{aheadRot} aheadBlocksPos[{i}] = x:{aheadBlockPos[i].x}, z:{aheadBlockPos[i].z} ");
+            
             if (CheckAheadBlockCanRotate(aheadBlockPos[i]))
             {
-                if (i == 3)
-                {
-                    //Debug.Log("Block들의 worldposition과 같은지 " + aheadBlockPos[i]);
-                }
-
                 count++;
             }
         }
-        transform.rotation = Quaternion.Euler(0, -90 * (int)aheadRot, 0);
+
+        int rotCount = (int)aheadRot;
+        if (rotCount == 0) rotCount = 3;
+        transform.rotation = tempQuaternion;
 
         if (blocks.Length == count)
         {
@@ -265,6 +259,7 @@ public class TetrominoController : MonoBehaviour
         else
         {
             Debug.Log("rotate false");
+            aheadRot--;
             return false;
         }
     }

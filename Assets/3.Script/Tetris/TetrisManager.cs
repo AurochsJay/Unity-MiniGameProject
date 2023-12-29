@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class TetrisManager : MonoBehaviour
 {
@@ -16,20 +17,12 @@ public class TetrisManager : MonoBehaviour
 
     private void Start()
     {
-        //grid = GameObject.Find("GameManager").GetComponent<Grid2D>(width, height);
         grid.SetGrid(height, width);
-
-        
     }
 
     private void Update()
     {
         FindTetromino();
-        //CheckLine();
-        if (Input.GetMouseButton(0))
-        {
-            Time.timeScale = 1;
-        }
         CheckGridArrayDebug();
     }
 
@@ -42,8 +35,9 @@ public class TetrisManager : MonoBehaviour
     {
         List<int> clearRows = new List<int>(); // 얘가 지금 뭐냐면 클리어한 줄의 열을 담을 리스트다
         bool isClear = false;
+        bool isGameOver = false;
 
-        for(int j = 0; j < 20; j++)
+        for(int j = 0; j < 21; j++) // j==20 -> GameOver
         {
             int rowCount = 0;
             for(int i = 0; i < width; i++)
@@ -51,6 +45,11 @@ public class TetrisManager : MonoBehaviour
                 if(grid.array[j,i] == 1)
                 {
                     rowCount++;
+                }
+
+                if(grid.array[20,i] == 1)
+                {
+                    isGameOver = true;
                 }
             }
 
@@ -61,7 +60,6 @@ public class TetrisManager : MonoBehaviour
                 Debug.Log($"줄이 다 채워지면 말좀.{j}열");
                 clearRows.Add(j);
                 isClear = true;
-                //ClearLine(j);
             }
         }
 
@@ -73,8 +71,13 @@ public class TetrisManager : MonoBehaviour
 
         if(isClear)
         {
-            Time.timeScale = 0;
-            PullLine(clearRows);
+            //Time.timeScale = 0;
+            StartCoroutine(PullLine(clearRows));
+        }
+
+        if(isGameOver)
+        {
+            GameOver();
         }
     }
 
@@ -88,7 +91,7 @@ public class TetrisManager : MonoBehaviour
             RaycastHit hit;
             if(Physics.Raycast(destroyPoint, Vector3.up * 2f, out hit))
             {
-                Debug.DrawRay(destroyPoint, Vector3.up * 5f, Color.red, Mathf.Infinity);
+                //Debug.DrawRay(destroyPoint, Vector3.up * 5f, Color.red, Mathf.Infinity);
                 Destroy(hit.transform.gameObject);
             }
         }
@@ -97,26 +100,22 @@ public class TetrisManager : MonoBehaviour
     }
 
     // Line Clear하면 윗줄 밑으로 땡겨와야함 // 두 줄 이상 동시에 사라지면? 한번에 최대 4줄삭제
-    private void PullLine(List<int> clearRows)
+    private IEnumerator PullLine(List<int> clearRows)
     {
-        // Clear된 줄 위의 열들을 한줄씩 땡긴다.
-        // 1열이 clear되면 2~20열 땡긴 후 3열이 clear되면 4~20 열 땡기면 되겠지
-        // clear된 줄의 윗줄부터 한칸씩 땡기면 되겠지.
-        // clearRows[0] -> 처음 삭제된 열 value, 이 열부터 땡기는게 맞다
-        int pullCount = clearRows.Count; // 땡겨야하는 count 최대 4번 땡길수 있겠지, 남은 줄 사이에 있는 열은 저 카운트에서 빼는걸로 땡기는 횟수를 줄이자
-
-        Debug.Log("PullLine 들어오나");
+        yield return new WaitForSeconds(0.05f);
 
         for(int j = clearRows[0]; j < 20; j++)
         {
             int count = 0;
             for (int row = 0; row < clearRows.Count; row++)
             {
+                Debug.Log("clearRows[row]의 값" + clearRows[row]);
                 if (j > clearRows[row])
                 {
                     count++;
                 }
             }
+            Debug.Log($"j의 값에 따른 count 값 j: {j}, count:{count}");
 
             for(int i = 0; i < width; i++)
             {
@@ -125,21 +124,21 @@ public class TetrisManager : MonoBehaviour
                 if (Physics.Raycast(rayPoint, Vector3.up * 2f, out hit))
                 {
                     // 처음 clear된 열부터 반복문 돌아가니까 만약에 맞았다면 그 줄은 clear가 안된 줄이다.
-                    // 그 j 열이 clearRows[0] clearRows[clearRows.Count] 사이에 있다면 땡겨야하는 카운트에 변동
-
-                    //if(clearRows[0] <= j && j <= clearRows[clearRows.Count-1])
-                    //{
-                    //    count = pullCount - (j - clearRows[0]);
-                    //}
-
-                    //hit.transform.position += new Vector3(0,0, -count);
+                    Debug.DrawRay(rayPoint, Vector3.up * 5f, Color.red, Mathf.Infinity);
+                    hit.transform.position += new Vector3(0,0, -count);
                     grid.array[j, i] = 0; // 맞은 위치에 블록이 없게되니까 index value 0
                     grid.array[j - count, i] = 1; // 끌어온 위치에 블록이 있게되니까 index value 1
+                    Debug.Log($"PullLine에서 ray 맞은 녀석있으면 들어왔겠지 : grid.array[{0},{i}] 값 : {grid.array[0, i]}");
                 }
-                Debug.Log($"클리어라인 들어왔겠지 : grid.array[{0},{i}] 값 : {grid.array[0, i]}");
             }
             
         }
+    }
+
+    // 게임오버
+    private void GameOver()
+    {
+
     }
 
     public void SyncGridPos(Vector3 block) => grid.array[(int)block.z, (int)block.x] = 1;
