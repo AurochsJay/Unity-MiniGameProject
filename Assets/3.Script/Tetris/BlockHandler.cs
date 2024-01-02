@@ -101,6 +101,7 @@ public class BlockHandler : MonoBehaviour
         }
 
         // 2. 해당 grid에 블록이 놓여져 있을때 배열의 x, z-1 값이 1이라면 // 바로 위에 위치해있다고 생각
+            Debug.Log("WorldPositon x, z : " + worldPosition);
         if(tetris.grid.array[(int)worldPosition.z-1, (int)worldPosition.x] == 1)
         {
             return true;

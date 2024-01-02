@@ -23,7 +23,7 @@ public class TetrisManager : MonoBehaviour
     private void Update()
     {
         FindTetromino();
-        CheckGridArrayDebug();
+        //CheckGridArrayDebug();
     }
 
     private void FindTetromino()

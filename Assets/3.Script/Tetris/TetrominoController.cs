@@ -37,6 +37,7 @@ public class TetrominoController : MonoBehaviour
     private float fall_ElapsedTime = 0f;
 
     private bool isOverlap = false; // 블록 겹침 변수
+    public bool isChangedFieldTetromino = false;
 
     private void Start()
     {
@@ -60,7 +61,10 @@ public class TetrominoController : MonoBehaviour
         // Input 조작
         if (isFieldTetromino)
         {
-            //UpdateBlocksWorldPosition();
+            if (isChangedFieldTetromino)
+            {
+                UpdateBlocksWorldPosition();
+            }
             Fall();
             //CopyPreviousTransform();
             Move();
@@ -172,7 +176,7 @@ public class TetrominoController : MonoBehaviour
                 }
 
                 isFieldTetromino = false;
-                tetris.spawner.Invoke("CreateTetromino", 0.2f);
+                tetris.spawner.Invoke("NextTetromino", 0.2f);
                 tetris.Invoke("CheckLine", 0.1f);
             }
         }
@@ -350,6 +354,14 @@ public class TetrominoController : MonoBehaviour
     // Block WorldPosition 갱신 // Rotate순서에 따라 위치값 보정
     private void UpdateBlocksWorldPosition()
     {
+        // FieldTetromino로 변할 때 grid 재설정해줘야함
+        if (isChangedFieldTetromino)
+        {
+            isChangedFieldTetromino = false;
+            grid_X = (int)(transform.position.x + offset.x);
+            grid_Y = (int)(transform.position.z + offset.z);
+        }
+
         // 코드 구조를 볼때 맨 처음에 block 포지션을 갱신할때 시작을 하니까. block과 관련된 변수초기화는 이 메서드에 넣는것이 맞는거 같은데
         isOverlap = false;
 
