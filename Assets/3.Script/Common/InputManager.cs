@@ -28,6 +28,9 @@ public class InputManager : MonoBehaviour
     //테트리스 드랍 변수
     public bool tetromino_Drop = false;
 
+    //테트리스 홀드 변수
+    public bool tetromino_Hold = false;
+
     private void Update()
     {
         move_X = Input.GetAxis("Horizontal");
@@ -78,6 +81,10 @@ public class InputManager : MonoBehaviour
         {
             tetromino_Drop = true;
         }
+        else if(Input.GetKeyDown(KeyCode.Tab))
+        {
+            tetromino_Hold = true;
+        }
         else
         {
             tetromino_Move_X = 0;
@@ -85,6 +92,7 @@ public class InputManager : MonoBehaviour
             tetromino_Move = false;
             tetromino_Rotate = false;
             tetromino_Drop = false;
+            tetromino_Hold = false;
         }
 
 

@@ -19,25 +19,35 @@ public class TetrominoController : MonoBehaviour
     [SerializeField] private TetrisManager tetris;
     //[SerializeField] private TetrominoSpawner spawner;
     [SerializeField] private BlockHandler[] blocks;
+    private readonly int blocksCount = 4;
     public int rotate_Count = 0;
     public bool isFieldTetromino = false;
 
     private int grid_X;
     private int grid_Y;
 
-    //전 위치로 되돌리는 변수
+    // Rollback 변수
     private Transform prevTransform;
     public Vector3[] pivotPoint;
     private Vector3 offset = new Vector3(0.5f, 0, 0.5f);
 
+    // Rotate 변수
     public Rot rot = Rot.Rot0;
     private Rot aheadRot = Rot.Rot0;
 
+    // Fall 변수
     private float timer = 0.8f;
     private float fall_ElapsedTime = 0f;
 
     private bool isOverlap = false; // 블록 겹침 변수
-    public bool isChangedFieldTetromino = false;
+    public bool isChangedFieldTetromino = false; // Next -> Field로 들어올 때
+
+    // Hold 변수
+    public Vector3 holdPos = new Vector3(-6, 0 ,19);
+    private bool isKeepingTetromino = false;
+
+    // ShowDropPos 변수
+    private Vector3[] dropPositions;
 
     private void Start()
     {
@@ -51,6 +61,12 @@ public class TetrominoController : MonoBehaviour
         transform.position = new Vector3(grid_X, 0, grid_Y) + offset;
         prevTransform = GetComponent<Transform>();
 
+        dropPositions = new Vector3[blocksCount];
+        for(int i =0; i < dropPositions.Length; i++)
+        {
+            dropPositions[i] = Vector3.zero;
+        }
+
         FindBlocks();
         UpdateBlocksWorldPosition();
         //CheckGridArrayDebug();
@@ -58,6 +74,11 @@ public class TetrominoController : MonoBehaviour
 
     private void Update()
     {
+        if(tetris.isGameOver)
+        {
+            isFieldTetromino = false;
+        }
+
         // Input 조작
         if (isFieldTetromino)
         {
@@ -70,7 +91,9 @@ public class TetrominoController : MonoBehaviour
             Move();
             Rotate();
             Drop();
+            Hold();
             Place();
+            ShowDropPosition();
         }
         
     }
@@ -148,7 +171,21 @@ public class TetrominoController : MonoBehaviour
                 {
                     canDrop = true;
                 }
+            }
+        }
+    }
 
+    private void Hold()
+    {
+        if(input.tetromino_Hold)
+        {
+            if (tetris.hasHoldTetromino) // Keep한 블록이 있으면 교체
+            {
+                Swap();
+            }
+            else // 아니면 Keep
+            {
+                Keep();
             }
         }
     }
@@ -407,6 +444,94 @@ public class TetrominoController : MonoBehaviour
         else
         {
             return true;
+        }
+    }
+
+    private void Swap()
+    {
+        isFieldTetromino = false;
+        isKeepingTetromino = true;
+
+        bool isHit = false;
+        RaycastHit hit;
+        for (int i = -1; i < 2; i++)
+        {
+            for (int j = -1; j < 2; j++)
+            {
+                Debug.DrawRay(holdPos + new Vector3(j, -2, i), Vector3.up * 5f, Color.red, Mathf.Infinity);
+                if (Physics.Raycast(holdPos + new Vector3(j, -2, i), Vector3.up * 5f, out hit) && !isHit)
+                {
+                    Debug.Log("Raycast 맞았음");
+                    isHit = true;
+                    hit.transform.parent.transform.position = this.transform.position;
+                    hit.transform.parent.GetComponent<TetrominoController>().isFieldTetromino = true;
+                    hit.transform.parent.GetComponent<TetrominoController>().isKeepingTetromino = false;
+                    hit.transform.parent.GetComponent<TetrominoController>().UpdateBlocksWorldPosition();
+                    break;
+                }
+            }
+            if (isHit) break;
+        }
+
+        transform.position = holdPos;
+    }
+
+    private void Keep()
+    {
+        isFieldTetromino = false;
+        isKeepingTetromino = true;
+        tetris.hasHoldTetromino = true;
+        tetris.spawner.Invoke("NextTetromino", 0.2f);
+        transform.position = holdPos;
+    }
+
+    private void ShowDropPosition()
+    {
+        bool canDrop = true;
+        for(int i = 0; i < tetris.height; i++)
+        {
+            //Debug.Log($"i의 값 {i}");
+            //Debug.Log($"dropPositions[idx]의 값 : ,{dropPositions[i]}");
+            if (canDrop)
+            {
+                int count = 0;
+                int zPosOffset = 0;
+                foreach (BlockHandler block in blocks)
+                {
+                    if (block.worldPosition.z-i == 0 || tetris.grid.array[(int)block.worldPosition.z - i, (int)block.worldPosition.x] == 1)
+                    {
+                        if(block.worldPosition.z - i == 0)
+                        {
+                            count++;
+                        }
+                        
+                        if(tetris.grid.array[(int)block.worldPosition.z - i, (int)block.worldPosition.x] == 1)
+                        {
+                            count++;
+                            zPosOffset = 1;
+                        }
+                    }
+                }
+
+                if (count > 0)
+                {
+                    canDrop = false;
+
+                    int idx = 0;
+                    foreach (BlockHandler block in blocks)
+                    {
+                        Debug.Log("인덱스 값 : " + idx);
+                        dropPositions[idx].x = block.worldPosition.x;
+                        dropPositions[idx].z = block.worldPosition.z - (i - zPosOffset);
+                        tetris.dropPosCube[idx].transform.position = dropPositions[idx];
+                        idx++;
+                    }
+                }
+                else
+                {
+                    canDrop = true;
+                }
+            }
         }
     }
 

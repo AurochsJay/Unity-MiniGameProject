@@ -10,6 +10,7 @@ public class BlockHandler : MonoBehaviour
 
     [SerializeField] private TetrisManager tetris;
     public Vector3 worldPosition;
+    public Vector3 dropPosition = Vector3.zero;
 
     private void Start()
     {
@@ -101,7 +102,7 @@ public class BlockHandler : MonoBehaviour
         }
 
         // 2. 해당 grid에 블록이 놓여져 있을때 배열의 x, z-1 값이 1이라면 // 바로 위에 위치해있다고 생각
-            Debug.Log("WorldPositon x, z : " + worldPosition);
+            //Debug.Log("WorldPositon x, z : " + worldPosition);
         if(tetris.grid.array[(int)worldPosition.z-1, (int)worldPosition.x] == 1)
         {
             return true;
@@ -114,6 +115,27 @@ public class BlockHandler : MonoBehaviour
     public void PlaceBlock()
     {
         tetris.grid.array[(int)worldPosition.z, (int)worldPosition.x] = 1;
+    }
+
+    // 블록의 포지션 z만 고려해서 DropPosition 보이게 해야함
+    public void UpdateDropPosition()
+    {
+        dropPosition.x = worldPosition.x;
+
+        for(int i=0; i < tetris.height; i++)
+        {
+            if(worldPosition.z - i == 0)
+            {
+                dropPosition.z = worldPosition.z - i;
+                break;
+            }
+
+            if(tetris.grid.array[(int)worldPosition.z-i, (int)worldPosition.x] == 1)
+            {
+                dropPosition.z = worldPosition.z;
+                break;
+            }
+        }
     }
     
     

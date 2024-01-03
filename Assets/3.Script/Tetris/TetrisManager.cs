@@ -2,18 +2,34 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class TetrisManager : MonoBehaviour
 {
     [SerializeField] public Grid2D grid;
     [SerializeField] public TetrominoSpawner spawner;
     [SerializeField] private TetrominoController tetromino;
-
+    [SerializeField] public GameObject[] dropPosCube;
     public readonly int width = 10;
     public readonly int height = 24;
+    public bool isGameOver = false;
 
-    private int lineCount = 0;
+
     private Vector3 offset = new Vector3(0.5f, 0, -0.5f);
+
+    // Hold 변수
+    public bool hasHoldTetromino = false;
+
+    [Header("UI")]
+    [SerializeField] private Text scoreText;
+    [SerializeField] private GameObject gameOverCanvas;
+    [SerializeField] private GameObject[] resultObject;
+    [SerializeField] private Image gameOverImage;
+    private int score = 0;
+    private int lineCount = 0; // score 계산용
+    private float playTime = 0; // Result
+    private int clearLineCount = 0; // Result 창에 보여줄 것. 몇개 부셨는지
+
 
     private void Start()
     {
@@ -22,20 +38,21 @@ public class TetrisManager : MonoBehaviour
 
     private void Update()
     {
-        FindTetromino();
+        UpdateInfo();
+        UpdateScore();
         //CheckGridArrayDebug();
     }
 
-    private void FindTetromino()
+    private void UpdateInfo()
     {
-
+        playTime += Time.deltaTime;
     }
 
     public void CheckLine()
     {
         List<int> clearRows = new List<int>(); // 얘가 지금 뭐냐면 클리어한 줄의 열을 담을 리스트다
         bool isClear = false;
-        bool isGameOver = false;
+        lineCount = 0;
 
         for(int j = 0; j < 21; j++) // j==20 -> GameOver
         {
@@ -60,6 +77,8 @@ public class TetrisManager : MonoBehaviour
                 Debug.Log($"줄이 다 채워지면 말좀.{j}열");
                 clearRows.Add(j);
                 isClear = true;
+                lineCount++;
+                clearLineCount++;
             }
         }
 
@@ -86,17 +105,13 @@ public class TetrisManager : MonoBehaviour
         for(int i = 0; i < width; i++)
         {
             grid.array[column, i] = 0;
-            //Debug.Log($"클리어라인 들어왔겠지 : grid.array[{column},{i}] 값 : {grid.array[column, i]}");
             Vector3 destroyPoint = new Vector3(i, -0.5f, column) + offset;
             RaycastHit hit;
             if(Physics.Raycast(destroyPoint, Vector3.up * 2f, out hit))
             {
-                //Debug.DrawRay(destroyPoint, Vector3.up * 5f, Color.red, Mathf.Infinity);
                 Destroy(hit.transform.gameObject);
             }
         }
-
-        //PullLine(column); // 줄확인-클리어-풀
     }
 
     // Line Clear하면 윗줄 밑으로 땡겨와야함 // 두 줄 이상 동시에 사라지면? 한번에 최대 4줄삭제
@@ -109,13 +124,11 @@ public class TetrisManager : MonoBehaviour
             int count = 0;
             for (int row = 0; row < clearRows.Count; row++)
             {
-                Debug.Log("clearRows[row]의 값" + clearRows[row]);
                 if (j > clearRows[row])
                 {
                     count++;
                 }
             }
-            Debug.Log($"j의 값에 따른 count 값 j: {j}, count:{count}");
 
             for(int i = 0; i < width; i++)
             {
@@ -124,21 +137,92 @@ public class TetrisManager : MonoBehaviour
                 if (Physics.Raycast(rayPoint, Vector3.up * 2f, out hit))
                 {
                     // 처음 clear된 열부터 반복문 돌아가니까 만약에 맞았다면 그 줄은 clear가 안된 줄이다.
-                    Debug.DrawRay(rayPoint, Vector3.up * 5f, Color.red, Mathf.Infinity);
+                    //Debug.DrawRay(rayPoint, Vector3.up * 5f, Color.red, Mathf.Infinity);
                     hit.transform.position += new Vector3(0,0, -count);
                     grid.array[j, i] = 0; // 맞은 위치에 블록이 없게되니까 index value 0
                     grid.array[j - count, i] = 1; // 끌어온 위치에 블록이 있게되니까 index value 1
-                    Debug.Log($"PullLine에서 ray 맞은 녀석있으면 들어왔겠지 : grid.array[{0},{i}] 값 : {grid.array[0, i]}");
                 }
             }
             
         }
     }
 
+    private void UpdateScore()
+    {
+        CalculateScore();
+
+        scoreText.text = $"Score : {score}";
+    }
+
+    private void CalculateScore()
+    {
+        if(lineCount > 0 )
+        {
+            float scoreMulti = 1f;
+            switch (lineCount)
+            {
+                case 1:
+                    scoreMulti = 1f;
+                    break;
+                case 2:
+                    scoreMulti = 1.4f;
+                    break;
+                case 3:
+                    scoreMulti = 1.7f;
+                    break;
+                case 4:
+                    scoreMulti = 2f;
+                    break;
+            }
+
+            score += 10 * (int)(lineCount * scoreMulti);
+            lineCount = 0;
+        }
+        
+        if(score > 1000)
+        {
+            GameOver();
+        }
+
+    }
+
     // 게임오버
     private void GameOver()
     {
+        gameOverCanvas.SetActive(true);
+        GameManager.instance.coin += (int)(score / 10);
+        StartCoroutine(ShowResultUI());
+        //Time.timeScale = 0;
+    }
 
+    private IEnumerator ShowResultUI()
+    {
+        WaitForSeconds wfs = new WaitForSeconds(0.8f);
+
+        for(int i = 0; i < resultObject.Length; i++)
+        {
+            resultObject[i].SetActive(true);
+
+            switch (i)
+            {
+                case 1:
+                    resultObject[i].GetComponent<Text>().text = $"Time  : {(int)playTime/60:00}:{(int)playTime%60:00}";
+                    break;
+                case 2:
+                    resultObject[i].GetComponent<Text>().text = $"Score : {score}";
+                    break;
+                case 3:
+                    resultObject[i].GetComponent<Text>().text = $"Coin  : {(int)(score/10)}";
+                    break;
+            }
+
+            yield return wfs;
+        }
+    }
+
+    public void GoToLobby()
+    {
+        SceneManager.LoadScene("Lobby");
     }
 
     public void SyncGridPos(Vector3 block) => grid.array[(int)block.z, (int)block.x] = 1;

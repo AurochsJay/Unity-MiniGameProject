@@ -10,7 +10,7 @@ public class TetrominoSpawner : MonoBehaviour
 
     [SerializeField] private GameObject[] tetrominoGroup;
     [SerializeField] private Transform[] nextPos;
-    private Vector3 spawnPos = new Vector3(4.5f, 0, 19.5f);
+    private Vector3 spawnPos = new Vector3(4.5f, 0, 17.5f);
     //private Vector3 spawnPos = new Vector3(5.5f, 0, 14.5f);
     public GameObject fieldTetromino;
 
