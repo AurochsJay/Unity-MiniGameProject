@@ -31,6 +31,11 @@ public class InputManager : MonoBehaviour
     //테트리스 홀드 변수
     public bool tetromino_Hold = false;
 
+    [Header("Snake")] // 스네이크 변수
+    public int snake_Move_X; // 좌우
+    public int snake_Move_Y; // 상하
+    public bool snake_Start; // 게임시작 
+
     private void Update()
     {
         move_X = Input.GetAxis("Horizontal");
@@ -42,6 +47,7 @@ public class InputManager : MonoBehaviour
         CheckG();
 
         TetrisInput();
+        SnakeInput();
     }
 
     private void CheckG()
@@ -94,10 +100,39 @@ public class InputManager : MonoBehaviour
             tetromino_Drop = false;
             tetromino_Hold = false;
         }
+    }
 
-
-
-
+    private void SnakeInput()
+    {
+        if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
+            snake_Move_X = 1;
+            snake_Move_Y = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
+            snake_Move_X = -1;
+            snake_Move_Y = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
+            snake_Move_Y = 1;
+            snake_Move_X = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
+            snake_Move_Y = -1;
+            snake_Move_X = 0;
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            snake_Start = true;
+        }
+        //else
+        //{
+        //    snake_Move_X = 0;
+        //    snake_Move_Y = 0;
+        //}
     }
 
 
