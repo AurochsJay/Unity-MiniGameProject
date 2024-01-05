@@ -13,11 +13,15 @@ public class SnakeManager : MonoBehaviour
 
     private Vector3 startPos = new Vector3(5, 0, 10);
 
-    private void Start()
+
+    
+    private void Awake()
     {
         grid.SetGrid(height, width);
         SetGridToWall();
         CreateTarget();
+
+        //CheckGridArrayDebug();
     }
 
     // ±×¸®µå¿¡ Wall ¼³Á¤, grid.array[y,x] == 0:ºóÄ­, 1:SnakeÄ­, 2:TargetÄ­, 3:WallÄ­
@@ -34,8 +38,6 @@ public class SnakeManager : MonoBehaviour
             }
         }
     }
-
-    
 
     // Target ·£´ý »ý¼º <- ÃÊ±â ¹× Snake°¡ TargetÀ» ¸ÔÀ¸¸é ½ÇÇà
     public void CreateTarget()
@@ -61,5 +63,17 @@ public class SnakeManager : MonoBehaviour
 
         grid.array[(int)ableNumber[rand].y, (int)ableNumber[rand].x] = 2;
         target.transform.position = new Vector3((int)ableNumber[rand].x, 0, (int)ableNumber[rand].y);
+    }
+
+    private void CheckGridArrayDebug()
+    {
+        for (int i = 0; i < 22; i++)
+        {
+            for (int j = 0; j < 22; j++)
+            {
+                //Debug.Log($"grid[{i},{j}] : {grid.array[0, 0]}");
+                Debug.Log($"grid[{i},{j}] : {grid.array[i, j]}");
+            }
+        }
     }
 }
