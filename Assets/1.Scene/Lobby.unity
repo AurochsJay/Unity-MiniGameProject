@@ -15468,6 +15468,11 @@ MonoBehaviour:
   tetromino_Move: 0
   tetromino_Rotate: 0
   tetromino_Drop: 0
+  tetromino_Hold: 0
+  tetromino_Start: 0
+  snake_Move_X: 0
+  snake_Move_Y: 0
+  snake_Start: 0
 --- !u!114 &916927975
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15480,6 +15485,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93ee43f94ba5a3245b7395081f5a7eb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  coin: 0
+  presentScene: 0
 --- !u!4 &916927976
 Transform:
   m_ObjectHideFlags: 0
@@ -28706,7 +28713,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8b4d7633239954c4290b1568c6ab486a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  color: {fileID: 2100000, guid: 5ed388533687a864facfc8d4a99528b6, type: 2}
+  baseColor: {fileID: 0}
+  emissionColor: {fileID: 2100000, guid: 5ed388533687a864facfc8d4a99528b6, type: 2}
 --- !u!1001 &1731618051
 PrefabInstance:
   m_ObjectHideFlags: 0

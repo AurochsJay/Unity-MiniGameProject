@@ -80,7 +80,7 @@ public class TetrominoController : MonoBehaviour
         }
 
         // Input ¡∂¿€
-        if (isFieldTetromino)
+        if (isFieldTetromino && input.tetromino_Start)
         {
             if (isChangedFieldTetromino)
             {

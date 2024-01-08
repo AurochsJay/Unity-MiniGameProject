@@ -25,14 +25,30 @@ public class ColorChange : MonoBehaviour
 
     private void Start()
     {
-        SetBaseColor();
-        SetEmissionColor();
+        if(baseColor != null)
+        {
+            SetBaseColor();
+        }
+
+        if(emissionColor != null)
+        {
+            SetEmissionColor();
+        }
         
     }
 
     private void Update()
     {
-        ChangeColor(baseColor, emissionColor);
+        if (baseColor != null)
+        {
+            ChangeColorBase(baseColor);
+        }
+
+        if (emissionColor != null)
+        {
+            ChangeColorEmission(emissionColor);
+        }
+        
     }
 
     private void SetBaseColor()
@@ -50,7 +66,12 @@ public class ColorChange : MonoBehaviour
         intensity = 1f / intensity;
     }
 
-    private void ChangeColor(Material baseColor, Material emissionColor)
+    private void ChangeColorBase(Material baseColor)
+    {
+
+    }
+
+    private void ChangeColorEmission(Material emissionColor)
     {
         if (timer >= 3.0f)
         {

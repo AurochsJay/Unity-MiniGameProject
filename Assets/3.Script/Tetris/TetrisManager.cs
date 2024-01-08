@@ -6,6 +6,7 @@ using UnityEngine.SceneManagement;
 
 public class TetrisManager : MonoBehaviour
 {
+    [SerializeField] private InputManager input;
     [SerializeField] public Grid2D grid;
     [SerializeField] public TetrominoSpawner spawner;
     [SerializeField] private TetrominoController tetromino;
@@ -21,6 +22,8 @@ public class TetrisManager : MonoBehaviour
     public bool hasHoldTetromino = false;
 
     [Header("UI")]
+    [SerializeField] private GameObject startText;
+    [SerializeField] private GameObject[] gameInfoImages;
     [SerializeField] private Text scoreText;
     [SerializeField] private GameObject gameOverCanvas;
     [SerializeField] private GameObject[] resultObject;
@@ -33,13 +36,22 @@ public class TetrisManager : MonoBehaviour
 
     private void Start()
     {
+        input = GameObject.Find("GameManager").GetComponent<InputManager>();
         grid.SetGrid(height, width);
     }
 
     private void Update()
     {
-        UpdateInfo();
-        UpdateScore();
+        if(input.tetromino_Start)
+        {
+            startText.gameObject.SetActive(false);
+            foreach(GameObject gameInfoImage in gameInfoImages)
+            {
+                gameInfoImage.SetActive(true);
+            }
+            UpdateInfo();
+            UpdateScore();
+        }
         //CheckGridArrayDebug();
     }
 

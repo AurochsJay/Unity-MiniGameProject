@@ -21,15 +21,11 @@ public class InputManager : MonoBehaviour
     public int tetromino_Move_X; // 좌우 이동
     public int tetromino_Move_Y; // 밑으로 이동
     public bool tetromino_Move = false;
+    public bool tetromino_Rotate = false; // 테트리스 회전 변수
+    public bool tetromino_Drop = false; // 테트리스 드랍 변수
+    public bool tetromino_Hold = false; // 테트리스 홀드 변수
+    public bool tetromino_Start = false; // 게임시작
 
-    //테트리스 회전 변수
-    public bool tetromino_Rotate = false;
-
-    //테트리스 드랍 변수
-    public bool tetromino_Drop = false;
-
-    //테트리스 홀드 변수
-    public bool tetromino_Hold = false;
 
     [Header("Snake")] // 스네이크 변수
     public int snake_Move_X; // 좌우
@@ -85,7 +81,11 @@ public class InputManager : MonoBehaviour
         }
         else if(Input.GetKeyDown(KeyCode.Space))
         {
-            tetromino_Drop = true;
+            if(tetromino_Start)
+            {
+                tetromino_Drop = true;
+            }
+            tetromino_Start = true;
         }
         else if(Input.GetKeyDown(KeyCode.Tab))
         {

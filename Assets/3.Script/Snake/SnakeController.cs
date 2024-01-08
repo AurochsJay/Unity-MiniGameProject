@@ -22,7 +22,7 @@ public class SnakeController : MonoBehaviour
     private Vector3 startPos = new Vector3(5, 0, 15);
 
     // Move 메서드 변수
-    private float timer = 0.5f;
+    private float timer = 0.2f;
     private float move_ElapsedTime = 0;
 
     private void Start()
@@ -38,7 +38,7 @@ public class SnakeController : MonoBehaviour
 
     private void Update()
     { 
-        if(input.snake_Start)
+        if(input.snake_Start && !snakeManager.isGameover)
         {
             CheckDirection();
             Move();
@@ -71,7 +71,6 @@ public class SnakeController : MonoBehaviour
     // 그리드에 Wall 설정, grid.array[y,x] == 0:빈칸, 1:Snake칸, 2:Target칸, 3:Wall칸
     private void Move()
     {
-        //Debug.Log("Move 들어오나?");
         move_ElapsedTime += Time.deltaTime;
 
         if(move_ElapsedTime > timer)
@@ -84,46 +83,23 @@ public class SnakeController : MonoBehaviour
             {
                 case MoveDirection.right:
                     snake[0].transform.position += Vector3.right;
-                    SyncPosToGrid(snake[0], previousPos);
-                    //snakeManager.grid.array[(int)snake[0].transform.position.z, (int)snake[0].transform.position.x] = 1;
-                    //snakeManager.grid.array[(int)previousPos.z, (int)previousPos.x] = 0;
                     break;
                 case MoveDirection.left:
                     snake[0].transform.position += Vector3.left;
-                    SyncPosToGrid(snake[0], previousPos);
                     break;
                 case MoveDirection.up:
                     snake[0].transform.position += Vector3.forward;
-                    SyncPosToGrid(snake[0], previousPos);
                     break;
                 case MoveDirection.down:
                     snake[0].transform.position += Vector3.back;
-                    SyncPosToGrid(snake[0], previousPos);
                     break;
             }
 
-            EatObject();
-            //Follow();
+            EatObject(); // 이동하고 먹은거 확인하고 
+            SyncPosToGrid(snake[0], previousPos); // 그 위치에 맞게 그리드에 갱신
+            Follow();
         }
 
-    }
-
-    // 머리 뒤로 따라오는 몸통
-    private void Follow()
-    {
-        //if(snake.Count > 1)
-        //{
-        //    snake[snake.Count - 1].transform.position = snake[snake.Count - 2].transform.position;
-        //    snakeManager.grid.array[]
-        //}
-
-        for(int i = 1; i < snake.Count; i++)
-        {
-            Vector3 previousPos = snake[snake.Count - i].transform.position;
-
-            snake[snake.Count - i].transform.position = snake[snake.Count - (i + 1)].transform.position;
-            SyncPosToGrid(snake[snake.Count - i], previousPos);
-        }
     }
 
     // Target 먹음
@@ -136,17 +112,62 @@ public class SnakeController : MonoBehaviour
         Debug.Log($"이동한 후의 snake[0]의 x값 : {(int)snake[0].transform.position.x}, z값 : {(int)snake[0].transform.position.z}");
         if (snakeManager.grid.array[column, row] == 1)
         {
-            GameOver();
+            snakeManager.GameOver();
         }
         else if(snakeManager.grid.array[column, row] == 2)
         {
-            CreateSnakeBody(column, row);
-            snakeManager.CreateTarget();
+            CreateSnakeBody(column, row); // 스네이크 몸통
+            snakeManager.CreateTarget(); // 새로운 Target 위치
+            snakeManager.coin_Count++;
         }
         else if(snakeManager.grid.array[column, row] == 3)
         {
-            GameOver();
+            snakeManager.GameOver();
         }                                                                                                     
+    }
+
+    // 머리 뒤로 따라오는 몸통
+    private void Follow()
+    {
+        for (int i = 1; i < snake.Count; i++)
+        {
+            Vector3 previousPos = snake[snake.Count - i].transform.position;
+
+            if (snake.Count-i ==1)
+            {
+                Vector3 offset = Vector3.zero;
+                switch (direction)
+                {
+                    case MoveDirection.right:
+                        offset = Vector3.left;
+                        break;
+                    case MoveDirection.left:
+                        offset = Vector3.right;
+                        break;
+                    case MoveDirection.up:
+                        offset = Vector3.back;
+                        break;
+                    case MoveDirection.down:
+                        offset = Vector3.forward;
+                        break;
+                }
+                snake[1].transform.position = snake[0].transform.position + offset;
+            }
+            else
+            {
+                snake[snake.Count - i].transform.position = snake[snake.Count - (i + 1)].transform.position;
+            }
+            
+            if(i == 1)
+            {
+                SyncPosToGrid(snake[snake.Count - i], previousPos);
+            }
+        }
+
+        foreach (GameObject snakebody in snake)
+        {
+            snakeManager.grid.array[(int)snakebody.transform.position.z, (int)snakebody.transform.position.x] = 1;
+        }
     }
 
     private void SyncPosToGrid(GameObject snake, Vector3 previousPos)
@@ -187,11 +208,11 @@ public class SnakeController : MonoBehaviour
             }
             else if (directionByTwoBody == Vector3.up)
             {
-                offset = Vector3.down;
+                offset = Vector3.back;
             }
             else if (directionByTwoBody == Vector3.down)
             {
-                offset = Vector3.up;
+                offset = Vector3.forward;
             }
         }
         else // 시작할 때 == snake.Count == 1
@@ -205,20 +226,15 @@ public class SnakeController : MonoBehaviour
                     offset = Vector3.right;
                     break;
                 case MoveDirection.up:
-                    offset = Vector3.down;
+                    offset = Vector3.back;
                     break;
                 case MoveDirection.down:
-                    offset = Vector3.up;
+                    offset = Vector3.forward;
                     break;
             }
         }
 
         return offset;
-    }
-
-    private void GameOver()
-    {
-        Debug.Log("GameOver됨");
     }
 
     private void CheckGridArrayDebug()

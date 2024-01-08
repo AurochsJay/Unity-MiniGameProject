@@ -74292,7 +74292,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 935475bc86dbaf64aa5231500a7304af, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  grid: {fileID: 11400000, guid: 410f9961b1553cb45bc0476c7c345a7c, type: 2}
+  grid: {fileID: 11400000, guid: 8071a78b682c90a4c9dcecb724d5f1d9, type: 2}
   cube_Prefab: {fileID: 7237211552494742835, guid: 643bbb2fdea11ee47883f26b96463d27, type: 3}
   colors:
   - {fileID: 2100000, guid: 9bd6eba8033be4d418cd3552276312a1, type: 2}

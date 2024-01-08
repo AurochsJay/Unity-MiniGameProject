@@ -9,19 +9,34 @@ public class Background : MonoBehaviour
     [SerializeField] private GameObject cube_Prefab;
     [SerializeField] private Material[] colors;
 
-    private int column = 30;
-    private int width = 53;
+    private int column = 35;
+    private int width = 65;
 
     private List<List<GameObject>> columns = new List<List<GameObject>>();
 
-    private Vector3 offset = new Vector3(-21, -10, -4.5f);
-    
+    //private Vector3 offset = new Vector3(-21, -10, -4.5f);
+    private Vector3 offset;
 
     private void Start()
     {
+        CheckScene();
         grid.SetGrid(column, width);
         GenerateCubes();
         StartCoroutine(ChangeColor());
+    }
+
+    private void CheckScene()
+    {
+        switch (GameManager.instance.presentScene)
+        {
+            case Scene.Tetris:
+                offset = new Vector3(-24, -10, -4.5f);
+                break;
+            case Scene.Snake:
+                offset = new Vector3(-21, -1, -6);
+                break;
+        }
+
     }
 
     private void GenerateCubes()
