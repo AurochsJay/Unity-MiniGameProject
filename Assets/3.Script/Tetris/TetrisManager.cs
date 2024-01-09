@@ -204,7 +204,6 @@ public class TetrisManager : MonoBehaviour
         gameOverCanvas.SetActive(true);
         GameManager.instance.coin += (int)(score / 10);
         StartCoroutine(ShowResultUI());
-        //Time.timeScale = 0;
     }
 
     private IEnumerator ShowResultUI()

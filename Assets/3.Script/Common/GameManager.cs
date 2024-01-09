@@ -31,7 +31,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        presentScene = Scene.Snake;
+        presentScene = Scene.Tetris;
     }
 
     private void Start()

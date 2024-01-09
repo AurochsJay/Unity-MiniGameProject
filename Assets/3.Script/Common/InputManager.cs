@@ -4,17 +4,14 @@ using UnityEngine;
 
 public class InputManager : MonoBehaviour
 {
-    [Header("Third-Person")]
-    //이동 변수
-    public float move_X;
-    public float move_Z;
-
-    //상호작용 키
-    public bool isG = false;
-
-    //마우스 회전 변수
+    [Header("Player")]
+    public float move_X; // 이동 변수
+    public float move_Z; // 이동 변수
     public float mouse_Rotate_X; // 상하 Mouse Y
     public float mouse_Rotate_Y; // 죄우 Mouse X
+    public bool press_Space = false; // 점프키
+    public bool press_G = false; // 상호작용 키
+    public bool press_Shift = false;
 
     [Header("Tetris")]
     //테트리스 이동 변수
@@ -34,27 +31,36 @@ public class InputManager : MonoBehaviour
 
     private void Update()
     {
+        PlayerInput();
+        TetrisInput();
+        SnakeInput();
+    }
+
+    private void PlayerInput()
+    {
         move_X = Input.GetAxis("Horizontal");
         move_Z = Input.GetAxis("Vertical");
 
         mouse_Rotate_X = Input.GetAxis("Mouse Y");
         mouse_Rotate_Y = Input.GetAxis("Mouse X");
 
-        CheckG();
-
-        TetrisInput();
-        SnakeInput();
-    }
-
-    private void CheckG()
-    {
         if (Input.GetKeyDown(KeyCode.G))
         {
-            isG = true;
+            press_G = true;
+        }
+        else if (Input.GetKeyDown(KeyCode.Space))
+        {
+            press_Space = true;
+        }
+        else if (Input.GetKey(KeyCode.LeftShift))
+        {
+            press_Shift = true;
         }
         else
         {
-            isG = false;
+            press_G = false;
+            press_Space = false;
+            press_Shift = false;
         }
     }
 

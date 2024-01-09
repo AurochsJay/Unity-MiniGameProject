@@ -136,16 +136,5 @@ public class SnakeManager : MonoBehaviour
     {
         SceneManager.LoadScene("Lobby");
     }
-
-    private void CheckGridArrayDebug()
-    {
-        for (int i = 0; i < 22; i++)
-        {
-            for (int j = 0; j < 22; j++)
-            {
-                //Debug.Log($"grid[{i},{j}] : {grid.array[0, 0]}");
-                Debug.Log($"grid[{i},{j}] : {grid.array[i, j]}");
-            }
-        }
-    }
+  
 }
