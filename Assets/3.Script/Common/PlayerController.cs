@@ -4,100 +4,75 @@ using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    public enum State { idle, walk, run, jump};
-
     [SerializeField] private InputManager input;
     [SerializeField] private LobbyManager lobby;
     [SerializeField] private CharacterController controller;
     [SerializeField] private Animator anim;
 
-    private State action = State.idle;
-    public Vector3 velocity;
-    public float walkSpeed = 5f;
-    public float runSpeed = 10f;
+    // Move
+    public float walkSpeed = 2f;
+    public float runSpeed = 5.5f;
     public float jumpForce = 5f;
 
+    // x축, z축 입력에 따른 값을 normalized할 것임. 정규화해서 방향벡터만 가지도록
+    // 이 speed값을 구하는 것은 x,z 입력받은 값을 magnitude하고 normalized하고 속력을 곱한다...
+    private Vector2 speed;
+    // 애니메이션 블렌드에 넣을 값
+    private float animBlend;
+
+    [Space(10)]
+    // Jump
+    public float jumpHeight = 1.5f;
+    public float gravity = -15f;
+    public bool isGrounded = true;
+
+    // 점프를 하기 위해 필요한 시간, 착지하자마자 점프는 어색하니까. 0f가 됐을때 점프가 가능하도록
+    // 착지모션에 도달하기 위해 필요한 시간, 아래계단으로 내려갈때 바로 fall모션 나오면 어색
+    private float jumpTimeoutDelta = 0.5f;
+    private float fallTimeoutDelta = 0.15f;
+
+    // controller.Move할때 == 실제로 이동하는 메서드 곱해줄 속력.
+    public float horizontalVelocity;
+    public float verticalVelocity;
+
+    public Vector3 velocity;
     private Vector3 rotation;
-    private bool isGrounded = true;
+
+    // Animation IDs
+    private int animSpeed;
+    private int animJump;
+    private int animGround;
+    private int animFall;
 
     private void Start()
     {
-        controller = this.GetComponent<CharacterController>();
-        anim = this.GetComponent<Animator>();
+        controller = GetComponent<CharacterController>();
+        anim = GetComponent<Animator>();
         rotation = transform.rotation.eulerAngles;
+
+        AssignAnimationIDs();
     }
 
     private void Update()
     {
-        CheckState();
-        ActByState();
-        Rotate();
-        //Move();
-        //Rotate();
-        //Jump();
+        Move();
+        Jump();
     }
 
-    private void CheckState()
+    private void FixedUpdate()
     {
-        if((input.move_X !=0 || input.move_Z != 0) && isGrounded)
-        {
-            action = State.walk;
-
-            if(input.press_Shift)
-            {
-                action = State.run;
-            }
-        }
-        
-        if(input.press_Space && isGrounded)
-        {
-            action = State.jump;
-        }
-
-        if(input.move_X == 0 && input.move_Z ==0 && !input.press_Space)
-        {
-            action = State.idle;
-        }
+        CameraRotation();   
     }
 
-    private void ActByState()
+    private void AssignAnimationIDs()
     {
-        switch (action)
-        {
-            case State.idle:
-                Idle();
-                break;
-            case State.walk:
-                Walk();
-                break;
-            case State.run:
-                Run();
-                break;
-            case State.jump:
-                Jump();
-                break;
-        }
+        animSpeed = Animator.StringToHash("speed");
+        animJump = Animator.StringToHash("isJump");
+        animGround = Animator.StringToHash("isGround");
+        animFall = Animator.StringToHash("isFall");
     }
 
-    private void Idle()
-    {
-        anim.SetBool("isWalk", false);
-        anim.SetBool("isRun", false);
-        anim.SetBool("isJump", false);
-        velocity = Vector3.zero;
-    }
-
-    private void Walk()
-    {
-        anim.SetBool("isWalk", true);
-
-        Vector3 moveDir = new Vector3(input.move_X, 0f, input.move_Z);
-        velocity = moveDir * walkSpeed * Time.deltaTime;
-        controller.Move(velocity);
-        //transform.Translate(moveDir * walkSpeed * Time.deltaTime);
-    }
-
-    private void Run()
+    private void Move()
     {
         anim.SetBool("isRun", true);
 
@@ -120,6 +95,11 @@ public class PlayerController : MonoBehaviour
     {
         rotation.y += input.mouse_Rotate_Y;
         transform.rotation = Quaternion.Euler(rotation);
+    }
+
+    private void CameraRotation()
+    {
+
     }
 
     private void OnTriggerStay(Collider other)

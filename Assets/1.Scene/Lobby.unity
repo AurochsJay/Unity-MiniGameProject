@@ -1252,7 +1252,7 @@ GameObject:
   m_Component:
   - component: {fileID: 72183821}
   - component: {fileID: 72183824}
-  - component: {fileID: 72183823}
+  - component: {fileID: 72183822}
   m_Layer: 0
   m_Name: cm
   m_TagString: Untagged
@@ -1274,7 +1274,7 @@ Transform:
   m_Father: {fileID: 1104628822}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &72183823
+--- !u!114 &72183822
 MonoBehaviour:
   m_ObjectHideFlags: 3
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1283,19 +1283,19 @@ MonoBehaviour:
   m_GameObject: {fileID: 72183820}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fa7155796051b734daa718462081dc5f, type: 3}
+  m_Script: {fileID: 11500000, guid: bd6043bde05a7fc4cba197d06915c1e3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_BindingMode: 1
-  m_FollowOffset: {x: 0, y: 10, z: -20}
-  m_XDamping: 1
-  m_YDamping: 1
-  m_ZDamping: 1
-  m_AngularDampingMode: 0
-  m_PitchDamping: 0
-  m_YawDamping: 0
-  m_RollDamping: 0
-  m_AngularDamping: 0
+  Damping: {x: 0.1, y: 0.25, z: 0.3}
+  ShoulderOffset: {x: 1, y: 4.66, z: -37.14}
+  VerticalArmLength: 7.51
+  CameraSide: 0.6
+  CameraDistance: 1
+  CameraCollisionFilter:
+    serializedVersion: 2
+    m_Bits: 1
+  IgnoreTag: Player
+  CameraRadius: 0.15
 --- !u!114 &72183824
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -2171,8 +2171,8 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 1000
-  field of view: 80
+  far clip plane: 500
+  field of view: 40
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
@@ -2197,8 +2197,8 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 112515500}
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 9.92, z: -20}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.20000005, y: 12.09, z: -38.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 421018780}
@@ -10773,11 +10773,15 @@ PrefabInstance:
     - target: {fileID: 7635726066119915157, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
       propertyPath: m_Avatar
       value: 
-      objectReference: {fileID: 9000000, guid: 82a2914d8f86c62488456950c8330e38, type: 3}
+      objectReference: {fileID: 9000000, guid: 5dd68b9ee69a74b4abe6c6f537d3b756, type: 3}
     - target: {fileID: 7635726066119915157, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
       propertyPath: m_Controller
       value: 
       objectReference: {fileID: 9100000, guid: d3268df976f583a49aacbfa353d9ca50, type: 2}
+    - target: {fileID: 7635726066119915157, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
+      propertyPath: m_WarningMessage
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
 --- !u!1001 &615158766
@@ -18228,7 +18232,7 @@ GameObject:
   - component: {fileID: 1104628821}
   - component: {fileID: 1104628823}
   m_Layer: 0
-  m_Name: CM vcam1
+  m_Name: PlayerFollowCamera
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -18255,10 +18259,10 @@ MonoBehaviour:
   m_LookAt: {fileID: 0}
   m_Follow: {fileID: 1292705835}
   m_Lens:
-    FieldOfView: 80
+    FieldOfView: 40
     OrthographicSize: 5
     NearClipPlane: 0.3
-    FarClipPlane: 1000
+    FarClipPlane: 500
     Dutch: 0
     LensShift: {x: 0, y: 0}
   m_Transitions:
@@ -18276,14 +18280,14 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104628820}
-  m_LocalRotation: {x: 0.17364816, y: 0, z: 0, w: 0.9848078}
-  m_LocalPosition: {x: 0, y: 9.92, z: -20}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.20000005, y: 12.09, z: -38.14}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 72183821}
   m_Father: {fileID: 0}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 20, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1104628823
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -18291,7 +18295,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1104628820}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 2dfd792f94e1f6541a212b235da5ad1f, type: 3}
   m_Name: 
