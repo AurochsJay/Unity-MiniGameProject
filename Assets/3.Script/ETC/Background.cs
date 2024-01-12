@@ -94,9 +94,6 @@ public class Background : MonoBehaviour
 
             yield return new WaitForSeconds(2f);
         }
-
-        
-        yield return null;
     }
 
 }

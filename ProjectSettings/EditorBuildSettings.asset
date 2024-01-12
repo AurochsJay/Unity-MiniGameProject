@@ -24,6 +24,6 @@ EditorBuildSettings:
     path: Assets/1.Scene/Maze.unity
     guid: 5c67861971698ca4b8a30af4ac7a4bf7
   - enabled: 1
-    path: Assets/1.Scene/JumpUp.unity
+    path: Assets/1.Scene/JJump.unity
     guid: 8a34ad83266a24944b7e9a2dffb1417c
   m_configObjects: {}

@@ -13,6 +13,14 @@ public class InputManager : MonoBehaviour
     public bool press_G = false; // 상호작용 키
     public bool press_Shift = false;
 
+    [Header("MouseCursorSetting")]
+    public bool cursorLocked = true;
+
+    [Header("Lobby")]
+    public bool press_UpArrow = false;
+    public bool press_DownArrow = false;
+    public bool press_Enter = false;
+
     [Header("Tetris")]
     //테트리스 이동 변수
     public int tetromino_Move_X; // 좌우 이동
@@ -29,11 +37,18 @@ public class InputManager : MonoBehaviour
     public int snake_Move_Y; // 상하
     public bool snake_Start; // 게임시작 
 
+    [Header("JJump")]
+    public string str = "변수 필요없을듯";
+
+
     private void Update()
     {
         PlayerInput();
+        LobbyInput();
         TetrisInput();
         SnakeInput();
+
+        MasterInput();
     }
 
     private void PlayerInput()
@@ -62,78 +77,126 @@ public class InputManager : MonoBehaviour
             press_Space = false;
             press_Shift = false;
         }
+
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            if(cursorLocked)
+            {
+                cursorLocked = false;
+            }
+            else
+            {
+                cursorLocked = true;
+            }
+
+        }
+
+        SetCursorState(cursorLocked);
+    }
+
+    private void LobbyInput()
+    {
+        if(GameManager.instance.presentScene == Scene.Lobby)
+        {
+            if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                press_UpArrow = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                press_DownArrow = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.Return))
+            {
+                press_Enter = true;
+            }
+            else
+            {
+                press_UpArrow = false;
+                press_DownArrow = false;
+                press_Enter = false;
+            }
+        }
     }
 
     private void TetrisInput()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if(GameManager.instance.presentScene == Scene.Tetris)
         {
-            tetromino_Move_X = 1;
-            tetromino_Move = true;
-        }
-        else if(Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            tetromino_Move_X = -1;
-            tetromino_Move = true;
-        }
-        else if(Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            tetromino_Move_Y = -1;
-            tetromino_Move = true;
-        }
-        else if(Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            tetromino_Rotate = true;
-        }
-        else if(Input.GetKeyDown(KeyCode.Space))
-        {
-            if(tetromino_Start)
+            if (Input.GetKeyDown(KeyCode.RightArrow))
             {
-                tetromino_Drop = true;
+                tetromino_Move_X = 1;
+                tetromino_Move = true;
             }
-            tetromino_Start = true;
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                tetromino_Move_X = -1;
+                tetromino_Move = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                tetromino_Move_Y = -1;
+                tetromino_Move = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                tetromino_Rotate = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                if (tetromino_Start)
+                {
+                    tetromino_Drop = true;
+                }
+                tetromino_Start = true;
+            }
+            else if (Input.GetKeyDown(KeyCode.Tab))
+            {
+                tetromino_Hold = true;
+            }
+            else
+            {
+                tetromino_Move_X = 0;
+                tetromino_Move_Y = 0;
+                tetromino_Move = false;
+                tetromino_Rotate = false;
+                tetromino_Drop = false;
+                tetromino_Hold = false;
+            }
         }
-        else if(Input.GetKeyDown(KeyCode.Tab))
-        {
-            tetromino_Hold = true;
-        }
-        else
-        {
-            tetromino_Move_X = 0;
-            tetromino_Move_Y = 0;
-            tetromino_Move = false;
-            tetromino_Rotate = false;
-            tetromino_Drop = false;
-            tetromino_Hold = false;
-        }
+        
     }
 
     private void SnakeInput()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if(GameManager.instance.presentScene == Scene.Snake)
         {
-            snake_Move_X = 1;
-            snake_Move_Y = 0;
+            if (Input.GetKeyDown(KeyCode.RightArrow))
+            {
+                snake_Move_X = 1;
+                snake_Move_Y = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.LeftArrow))
+            {
+                snake_Move_X = -1;
+                snake_Move_Y = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.UpArrow))
+            {
+                snake_Move_Y = 1;
+                snake_Move_X = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.DownArrow))
+            {
+                snake_Move_Y = -1;
+                snake_Move_X = 0;
+            }
+            else if (Input.GetKeyDown(KeyCode.Space))
+            {
+                snake_Start = true;
+            }
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
-        {
-            snake_Move_X = -1;
-            snake_Move_Y = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.UpArrow))
-        {
-            snake_Move_Y = 1;
-            snake_Move_X = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.DownArrow))
-        {
-            snake_Move_Y = -1;
-            snake_Move_X = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.Space))
-        {
-            snake_Start = true;
-        }
+        
         //else
         //{
         //    snake_Move_X = 0;
@@ -141,5 +204,17 @@ public class InputManager : MonoBehaviour
         //}
     }
 
+    private void MasterInput()
+    {
+        if(Input.GetKeyDown(KeyCode.F1))
+        {
+            GameManager.instance.coin += 1000;
+        }
+    }
+
+    private void SetCursorState(bool state)
+    {
+        Cursor.lockState = state ? CursorLockMode.Locked : CursorLockMode.None;
+    }
 
 }

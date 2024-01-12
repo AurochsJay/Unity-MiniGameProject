@@ -8,7 +8,7 @@ public enum Scene
     Lobby,
     Tetris,
     Snake,
-    JumpUp
+    JJump
 }
 
 
@@ -31,12 +31,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        presentScene = Scene.Tetris;
+        presentScene = Scene.Lobby;
     }
 
     private void Start()
     {
-        //presentScene = Scene.Snake;
+        //presentScene = Scene.MainMenu;
     }
     
 }

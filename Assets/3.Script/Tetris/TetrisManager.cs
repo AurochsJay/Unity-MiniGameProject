@@ -204,6 +204,7 @@ public class TetrisManager : MonoBehaviour
         gameOverCanvas.SetActive(true);
         GameManager.instance.coin += (int)(score / 10);
         StartCoroutine(ShowResultUI());
+        input.tetromino_Start = false;
     }
 
     private IEnumerator ShowResultUI()
@@ -233,6 +234,7 @@ public class TetrisManager : MonoBehaviour
 
     public void GoToLobby()
     {
+        GameManager.instance.presentScene = Scene.Lobby;
         SceneManager.LoadScene("Lobby");
     }
 

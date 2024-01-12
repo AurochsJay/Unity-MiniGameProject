@@ -99,6 +99,7 @@ public class SnakeManager : MonoBehaviour
         CalculateTimeMultiple();
         GameManager.instance.coin += (int)(coin_Count * time_Multiple);
         StartCoroutine(ShowResultUI());
+        input.snake_Start = false;
     }
 
     private IEnumerator ShowResultUI()
@@ -134,6 +135,7 @@ public class SnakeManager : MonoBehaviour
 
     public void GoToLobby()
     {
+        GameManager.instance.presentScene = Scene.Lobby;
         SceneManager.LoadScene("Lobby");
     }
   
