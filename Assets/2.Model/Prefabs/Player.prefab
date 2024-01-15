@@ -1983,7 +1983,7 @@ MonoBehaviour:
   walkSpeed: 20
   runSpeed: 55
   speedChangeRate: 10
-  rotationSmoothTime: 0.7
+  rotationSmoothTime: 0.12
   jumpHeight: 2
   gravity: -15
   isGrounded: 1
@@ -1997,7 +1997,10 @@ MonoBehaviour:
   horizontalVelocity: 0
   verticalVelocity: 0
   velocity: {x: 0, y: 0, z: 0}
-  cinemachineCameraTarget: {fileID: 0}
+  cinemachineCameraTarget: {fileID: 4129673100094620659}
+  cameraRotateSpeed: 2
+  TopClamp: 15
+  BottomClamp: -5
 --- !u!1 &3921334144448749991
 GameObject:
   m_ObjectHideFlags: 0

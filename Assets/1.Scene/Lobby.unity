@@ -14813,25 +14813,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1728406838}
     - target: {fileID: 1292705831, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
-      propertyPath: TopClamp
-      value: 15
-      objectReference: {fileID: 0}
-    - target: {fileID: 1292705831, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
       propertyPath: mainCamera
       value: 
       objectReference: {fileID: 112515500}
-    - target: {fileID: 1292705831, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
-      propertyPath: BottomClamp
-      value: -5
-      objectReference: {fileID: 0}
-    - target: {fileID: 1292705831, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
-      propertyPath: rotationSmoothTime
-      value: 0.12
-      objectReference: {fileID: 0}
-    - target: {fileID: 1292705831, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
-      propertyPath: cinemachineCameraTarget
-      value: 
-      objectReference: {fileID: 607435597}
     - target: {fileID: 539745478100655087, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
       propertyPath: m_RootOrder
       value: 13
@@ -14882,11 +14866,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
---- !u!1 &607435597 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4129673100094620659, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
-  m_PrefabInstance: {fileID: 607435596}
-  m_PrefabAsset: {fileID: 0}
 --- !u!4 &607435598 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1948369083673675134, guid: 228ff5dd7b789b64a970619263ae9e10, type: 3}
@@ -22315,6 +22294,7 @@ MonoBehaviour:
   snake_Move_X: 0
   snake_Move_Y: 0
   snake_Start: 0
+  str: "\uBCC0\uC218 \uD544\uC694\uC5C6\uC744\uB4EF"
 --- !u!114 &916927975
 MonoBehaviour:
   m_ObjectHideFlags: 0
