@@ -1880,7 +1880,7 @@ GameObject:
   - component: {fileID: 1292705831}
   m_Layer: 8
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1999,8 +1999,8 @@ MonoBehaviour:
   velocity: {x: 0, y: 0, z: 0}
   cinemachineCameraTarget: {fileID: 4129673100094620659}
   cameraRotateSpeed: 2
-  TopClamp: 15
-  BottomClamp: -5
+  TopClamp: 25
+  BottomClamp: -15
 --- !u!1 &3921334144448749991
 GameObject:
   m_ObjectHideFlags: 0

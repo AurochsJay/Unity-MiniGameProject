@@ -10,6 +10,7 @@ public class LobbyManager : MonoBehaviour
     [SerializeField] public GameObject gKeyImage;
     [SerializeField] public GameObject showGameTitleImage;
     [SerializeField] private GameObject[] gameNameText;
+    [SerializeField] private Text coinText;
     private string gameName;
 
     private void Start()
@@ -23,6 +24,8 @@ public class LobbyManager : MonoBehaviour
         {
             SelectGameInUI();
         }
+
+        UpdateInfo();
     }
 
     private void SelectGameInUI()
@@ -97,6 +100,11 @@ public class LobbyManager : MonoBehaviour
                 break;
         }
 
+    }
+
+    private void UpdateInfo()
+    {
+        coinText.text = $"Coin : {GameManager.instance.coin}";
     }
 
 }

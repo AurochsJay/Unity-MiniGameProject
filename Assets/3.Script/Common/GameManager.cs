@@ -20,6 +20,8 @@ public class GameManager : MonoBehaviour
 
     public Scene presentScene;
 
+    public AudioSource audio;
+
     private void Awake()
     {
         if(instance == null)
@@ -31,12 +33,12 @@ public class GameManager : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
-        presentScene = Scene.Lobby;
     }
 
     private void Start()
     {
-        //presentScene = Scene.MainMenu;
+        presentScene = Scene.MainMenu;
+        audio = GetComponent<SoundManager>().audioSource;
     }
     
 }

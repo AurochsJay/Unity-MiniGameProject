@@ -6,6 +6,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private InputManager input;
     [SerializeField] private LobbyManager lobby;
+    [SerializeField] private JJumpManager jjump;
     [SerializeField] private GameObject mainCamera; 
     [SerializeField] private CharacterController controller;
     [SerializeField] private Animator anim;
@@ -76,6 +77,8 @@ public class PlayerController : MonoBehaviour
     private void Start()
     {
         input = GameObject.Find("GameManager").GetComponent<InputManager>();
+        if(GameObject.Find("LobbyManager") != null) lobby = GameObject.Find("LobbyManager").GetComponent<LobbyManager>();
+        if(GameObject.Find("JJumpManager") != null) jjump = GameObject.Find("JJumpManager").GetComponent<JJumpManager>();
         controller = GetComponent<CharacterController>();
         anim = GetComponent<Animator>();
 
@@ -283,6 +286,17 @@ public class PlayerController : MonoBehaviour
                 lobby.showGameTitleImage.SetActive(true);
             }
         }
+
+        if (other.CompareTag("CoinReturn") && jjump.coin_Count >= 1)
+        {
+            jjump.coinReturn.SetActive(true);
+
+            if (input.press_G)
+            {
+                jjump.coinMultiple = 2;
+                jjump.GameOver();
+            }
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -291,6 +305,38 @@ public class PlayerController : MonoBehaviour
         {
             lobby.gKeyImage.SetActive(false);
             lobby.showGameTitleImage.SetActive(false);
+        }
+
+        if (other.CompareTag("CoinReturn"))
+        {
+            jjump.coinReturn.SetActive(false);
+        }
+    }
+
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        //GameManager.instance.presentScene == Scene.JJump && 
+        if (hit.gameObject.CompareTag("Platform"))
+        {
+            IslandController hitIsland = hit.gameObject.GetComponent<IslandController>();
+            hitIsland.spawner.GenerateIslands(hitIsland.lineNumber + 1);
+
+            if(!hitIsland.wasHit)
+            {
+                hitIsland.wasHit = true;
+                StartCoroutine(hitIsland.Disappear());
+            }
+        }
+
+        if(hit.gameObject.CompareTag("JJumpCoin"))
+        {
+            jjump.coin_Count++;
+            Destroy(hit.gameObject);
+        }
+
+        if(hit.gameObject.CompareTag("DeadZone"))
+        {
+            jjump.GameOver();
         }
     }
 

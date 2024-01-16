@@ -33,6 +33,10 @@ public class TetrisManager : MonoBehaviour
     private float playTime = 0; // Result
     private int clearLineCount = 0; // Result 창에 보여줄 것. 몇개 부셨는지
 
+    [Header("Effect")]
+    [SerializeField] private Particle[] particles;
+    private int effectCount = 0;
+
 
     private void Start()
     {
@@ -94,9 +98,11 @@ public class TetrisManager : MonoBehaviour
             }
         }
 
+        effectCount = 0;
         for(int j = 0; j < clearRows.Count; j++)
         {
             ClearLine(clearRows[j]);
+            effectCount++;
         }
 
 
@@ -123,6 +129,7 @@ public class TetrisManager : MonoBehaviour
             {
                 Destroy(hit.transform.gameObject);
             }
+            particles[effectCount].PlayParticleEffect(column);
         }
     }
 
@@ -201,6 +208,7 @@ public class TetrisManager : MonoBehaviour
     // 게임오버
     private void GameOver()
     {
+        Cursor.lockState = CursorLockMode.None;
         gameOverCanvas.SetActive(true);
         GameManager.instance.coin += (int)(score / 10);
         StartCoroutine(ShowResultUI());
@@ -234,6 +242,7 @@ public class TetrisManager : MonoBehaviour
 
     public void GoToLobby()
     {
+        GameManager.instance.audio.clip = null;
         GameManager.instance.presentScene = Scene.Lobby;
         SceneManager.LoadScene("Lobby");
     }

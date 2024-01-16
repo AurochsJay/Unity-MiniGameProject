@@ -98,6 +98,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tetris: {fileID: 0}
   worldPosition: {x: 0, y: 0, z: 0}
+  dropPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &6395325320166941093
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -168,6 +169,8 @@ MonoBehaviour:
   - {x: 0.0000001687563, y: 2.1026943e+20, z: 8.310082e+20}
   - {x: 0.000000010313756, y: 0.0001737713, z: -1.7960801e-31}
   rot: 0
+  isChangedFieldTetromino: 0
+  holdPos: {x: -6, y: 0, z: 19}
 --- !u!1 &337402212306884181
 GameObject:
   m_ObjectHideFlags: 0
@@ -266,6 +269,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tetris: {fileID: 0}
   worldPosition: {x: 0, y: 0, z: 0}
+  dropPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &6074379072911320134
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -377,6 +381,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tetris: {fileID: 0}
   worldPosition: {x: 0, y: 0, z: 0}
+  dropPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &236393558164688628
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -488,6 +493,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tetris: {fileID: 0}
   worldPosition: {x: 0, y: 0, z: 0}
+  dropPosition: {x: 0, y: 0, z: 0}
 --- !u!65 &1971709589683055701
 BoxCollider:
   m_ObjectHideFlags: 0

@@ -38,8 +38,9 @@ public class InputManager : MonoBehaviour
     public bool snake_Start; // 게임시작 
 
     [Header("JJump")]
+    [SerializeField] private JJumpManager jjumpManager;
+    public bool JJump_Start = false; // 게임시작 
     public string str = "변수 필요없을듯";
-
 
     private void Update()
     {
@@ -47,12 +48,17 @@ public class InputManager : MonoBehaviour
         LobbyInput();
         TetrisInput();
         SnakeInput();
+        JJumpInput();
 
         MasterInput();
     }
 
     private void PlayerInput()
     {
+        if (GameObject.Find("Player") == null) return;
+
+        if (GameManager.instance.presentScene == Scene.JJump && !JJump_Start) return;
+
         move_X = Input.GetAxis("Horizontal");
         move_Z = Input.GetAxis("Vertical");
 
@@ -202,6 +208,17 @@ public class InputManager : MonoBehaviour
         //    snake_Move_X = 0;
         //    snake_Move_Y = 0;
         //}
+    }
+
+    private void JJumpInput()
+    {
+        if(GameManager.instance.presentScene == Scene.JJump)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                JJump_Start = true;
+            }
+        }
     }
 
     private void MasterInput()

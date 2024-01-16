@@ -94,6 +94,7 @@ public class SnakeManager : MonoBehaviour
 
     public void GameOver()
     {
+        Cursor.lockState = CursorLockMode.None;
         isGameover = true;
         gameOverCanvas.SetActive(true);
         CalculateTimeMultiple();
@@ -135,6 +136,7 @@ public class SnakeManager : MonoBehaviour
 
     public void GoToLobby()
     {
+        GameManager.instance.audio.clip = null;
         GameManager.instance.presentScene = Scene.Lobby;
         SceneManager.LoadScene("Lobby");
     }

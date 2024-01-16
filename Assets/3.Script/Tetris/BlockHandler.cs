@@ -12,6 +12,7 @@ public class BlockHandler : MonoBehaviour
     public Vector3 worldPosition;
     public Vector3 dropPosition = Vector3.zero;
 
+
     private void Start()
     {
         tetris = GameObject.Find("TetrisManager").GetComponent<TetrisManager>();

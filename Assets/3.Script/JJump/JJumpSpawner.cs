@@ -5,7 +5,7 @@ using UnityEngine;
 public class JJumpSpawner : MonoBehaviour
 {
     [SerializeField] private JJumpManager manager;
-    [SerializeField] private IslandController islandController;
+    //[SerializeField] private IslandController islandController;
     
     [Space(10)]
     
@@ -38,22 +38,78 @@ public class JJumpSpawner : MonoBehaviour
 
         for (int i =0; i < islandCount; i++)
         {
-            float random_YAxis = Random.Range(-2f, 2f); // y축 값 랜덤, 0이 기준
+            Vector3 spawnPos = CalculatePosition(idx);
+            
             int random_Prefab = Random.Range(0, island_Prefabs.Length); // Prefab들 중 하나 랜덤뽑기
-            GameObject island = Instantiate(island_Prefabs[random_Prefab], Vector3.zero, Quaternion.identity);
+            GameObject island = Instantiate(island_Prefabs[random_Prefab], spawnPos, Quaternion.identity);
             island.gameObject.name = $"island_{idx + 1}Line";
             island.gameObject.GetComponent<IslandController>().lineNumber = idx;
             island.gameObject.transform.SetParent(island_Parent.gameObject.transform);
+
+            GenerateCoins(spawnPos);
+
         }
 
         // 해당 줄에 맞는 섬이 다 생성되면 섬 갯수 *2배, usedLineNumber true로 바꿈
         islandCount *= 2;
+        if (idx == 3) islandCount /= 2;
         manager.usedLineNumber[idx] = true;
+    }
+
+    private Vector3 CalculatePosition(int idx)
+    {
+        float random_YAxis = Random.Range(-1f, 1f); // y축 값 랜덤, 0이 기준
+        float x = Random.Range(-distanceBtwIslands[idx], distanceBtwIslands[idx]);
+        float z = Mathf.Sqrt(Mathf.Pow(distanceBtwIslands[idx],2) - Mathf.Pow(x,2));
+        int signNumber = Random.Range(0, 2);
+        if (signNumber == 0) z = -z;
+
+        Vector3 spawnPos = new Vector3(x, random_YAxis, z);
+
+        // 해당 위치에 섬이 있는지 없는지 체크
+        bool isEmptySpace = CheckPosition(spawnPos);
+
+        while (!isEmptySpace)
+        {
+            random_YAxis = Random.Range(-1f, 1f);
+            x = Random.Range(-distanceBtwIslands[idx], distanceBtwIslands[idx]);
+            z = Mathf.Sqrt(Mathf.Pow(distanceBtwIslands[idx], 2) - Mathf.Pow(x, 2));
+            signNumber = Random.Range(0, 2);
+            if (signNumber == 0) z = -z;
+            spawnPos = new Vector3(x, random_YAxis, z);
+            isEmptySpace = CheckPosition(spawnPos);
+        }
+
+        return spawnPos;
+    }
+
+    private bool CheckPosition(Vector3 spawnPos)
+    {
+        bool isEmptySpace = true;
+        float straightOffset = 3.5f;
+
+        Collider[] colliders = Physics.OverlapSphere(spawnPos, straightOffset);
+        
+        if(colliders.Length >= 1)
+        {
+            isEmptySpace = false;
+        }
+        else
+        {
+            isEmptySpace = true;
+        }
+
+        return isEmptySpace;
+    }
+    
+    private void GenerateCoins(Vector3 spawnPos)
+    {
+        GameObject coin = Instantiate(coin_Prefab, spawnPos + Vector3.up*2, Quaternion.identity);
     }
 
     private void InitiateSetting()
     {
-        islandCount = Random.Range(2, 4);
+        islandCount = 3;
     }
 
 

@@ -8,6 +8,10 @@ TagManager:
   - Tetromino_O
   - Tetromino_I
   - PlayerEyes
+  - Platform
+  - JJumpCoin
+  - DeadZone
+  - CoinReturn
   layers:
   - Default
   - TransparentFX
