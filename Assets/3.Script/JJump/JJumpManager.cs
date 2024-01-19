@@ -53,6 +53,8 @@ public class JJumpManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (isGameover) return;
+
         coinReturn.SetActive(false);
         isGameover = true;
         gameOverCanvas.SetActive(true);
@@ -88,7 +90,7 @@ public class JJumpManager : MonoBehaviour
 
     public void GoToLobby()
     {
-        GameManager.instance.audio.clip = null;
+        GameManager.instance.soundManager.audioSource.clip = null;
         GameManager.instance.presentScene = Scene.Lobby;
         SceneManager.LoadScene("Lobby");
     }

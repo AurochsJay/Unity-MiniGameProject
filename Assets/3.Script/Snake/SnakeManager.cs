@@ -94,6 +94,8 @@ public class SnakeManager : MonoBehaviour
 
     public void GameOver()
     {
+        if (isGameover) return;
+
         Cursor.lockState = CursorLockMode.None;
         isGameover = true;
         gameOverCanvas.SetActive(true);
@@ -136,7 +138,7 @@ public class SnakeManager : MonoBehaviour
 
     public void GoToLobby()
     {
-        GameManager.instance.audio.clip = null;
+        GameManager.instance.soundManager.audioSource.clip = null;
         GameManager.instance.presentScene = Scene.Lobby;
         SceneManager.LoadScene("Lobby");
     }

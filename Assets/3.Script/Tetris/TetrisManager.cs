@@ -14,6 +14,7 @@ public class TetrisManager : MonoBehaviour
     public readonly int width = 10;
     public readonly int height = 24;
     public bool isGameOver = false;
+    private bool isGameOver_Coin = true;
 
 
     private Vector3 offset = new Vector3(0.5f, 0, -0.5f);
@@ -208,6 +209,9 @@ public class TetrisManager : MonoBehaviour
     // 게임오버
     private void GameOver()
     {
+        if (!isGameOver_Coin) return;
+        isGameOver_Coin = true;
+
         Cursor.lockState = CursorLockMode.None;
         gameOverCanvas.SetActive(true);
         GameManager.instance.coin += (int)(score / 10);
@@ -242,7 +246,7 @@ public class TetrisManager : MonoBehaviour
 
     public void GoToLobby()
     {
-        GameManager.instance.audio.clip = null;
+        GameManager.instance.soundManager.audioSource.clip = null;
         GameManager.instance.presentScene = Scene.Lobby;
         SceneManager.LoadScene("Lobby");
     }

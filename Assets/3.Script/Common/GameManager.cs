@@ -20,7 +20,7 @@ public class GameManager : MonoBehaviour
 
     public Scene presentScene;
 
-    public AudioSource audio;
+    [SerializeField] public SoundManager soundManager;
 
     private void Awake()
     {
@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         presentScene = Scene.MainMenu;
-        audio = GetComponent<SoundManager>().audioSource;
+        soundManager = GetComponent<SoundManager>();
     }
     
 }
